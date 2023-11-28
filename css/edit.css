@@ -1,0 +1,98 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#password, #empID, #date{
+border:none;
+outline: none;
+background-color: #ededed;
+}
+
+
+#content {
+padding: 20px;
+transition: margin-left 0.5s;
+margin-top: 2em;
+}
+
+
+.additional-container img{
+z-index: 1;
+}
+.back-btn{
+
+}
+.container input{
+border-radius: 3em;
+border: none;
+outline: none;
+background-color: #ebf5ee;
+padding: 12px;
+width:100%;
+padding-left:20px;
+}
+.container select{
+border-radius: 3em;
+border: none;
+outline: none;
+background-color: #ebf5ee;
+padding: 12px;
+width: 100%;
+margin-bottom: 1em;
+}
+
+.container label{
+font-size: 13px;
+margin-left: 10px;
+
+}
+.submit-btn{
+width: 100%;
+}
+.submit-btn input{
+background-color: #46a362;
+color: white;
+font-weight: bold;
+}
+.submit-btn input:hover{
+background-color: #5bc97c;
+transition: .3s;
+}
+#info-txt{
+text-align: left;
+letter-spacing: -1.4px;
+}
+
+
+/* Center the modal on the screen */
+@media screen and (max-width: 600px) {
+.modal-content {
+    width: 100%;
+}
+}

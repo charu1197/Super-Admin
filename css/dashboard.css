@@ -1,0 +1,180 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+  }
+
+  #sidebar {
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #204A3D;
+    overflow-x: hidden;
+    font-family: 'Lato', sans-serif;
+    transition: 0.5s;
+    padding-top: 60px;
+    color: #ecf0f1;
+  }
+
+  #sidebar a {
+    padding: 15px 20px;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: #ecf0f1;
+    top: 20px;
+    display: block;
+    transition: 0.3s;
+    font-size: 15px;
+  }
+
+  #sidebar p {
+      font-size: 15px;
+    font-family: 'Lato', sans-serif;
+        color: #ecf0f1;
+        text-align: center;
+  }
+
+  #sidebar a:hover {
+    background-color: #275c4c;
+  }
+
+  #burger-menu {
+    position: fixed;
+    top: 13px;
+    left: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+    z-index: 1;
+  }
+
+  #content {
+    padding: 20px;
+    transition: margin-left 0.5s;
+    margin-top: 2em;
+  }
+
+  #header {
+    /* background-color: #A9BEB7; */
+    background-color: #204A3D;
+    padding: 15px;
+    color: white;
+    height: 30px;
+    text-align: right;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  #profile {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+  }
+
+  #profile img {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    margin-right: 15px;
+
+  }
+
+  #profile .dropdown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 150px;
+    background-color: #A9BEB7;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 1;
+  }
+
+  #profile:hover .dropdown {
+    display: block;
+  }
+
+  #profile .dropdown a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+  }
+
+  #profile .dropdown a:hover {
+    background-color: #2c3e50;
+  }
+
+  #logo {
+    display: block;
+    margin: 20px auto;
+    max-width: 50%;
+    border: solid 2px #5bbdb0;
+    border-radius: 50%;
+  }
+  #sidebar a.active-link {
+  background-color: #275c4c;
+  color: #fff;
+}
+.additional-container img{
+z-index: 1;
+}
+/* Add this CSS to your existing styles in the <style> tag or in your external CSS file */
+
+/* The Modal */
+.modal {
+display: none;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0,0,0,0.4);
+}
+
+/* Modal Content */
+.modal-content {
+background-color: #fefefe;
+margin: 15% auto;
+padding: 20px;
+border: 1px solid #888;
+width: 80%;
+max-width: 600px;
+}
+
+/* Close button */
+.close {
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+color: black;
+text-decoration: none;
+cursor: pointer;
+}
+#sidebar a i{
+margin-right: 1.5em;
+margin-left: .7em;
+}
+#sidebar a{
+font-weight: bold;
+font-size: 13px;
+letter-spacing:.3px;
+}
+.page-title-box{
+  display: flex;
+}
