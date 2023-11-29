@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_SESSION)) {
-    session_start();
+	session_start();
 }
 
 include_once("connections/connection.php");
@@ -9,59 +9,58 @@ include_once("connections/connection.php");
 $con = connection();
 
 if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
+	$_SESSION['login_attempts'] = 0;
 }
 if (!isset($_SESSION['last_attempt_time'])) {
-    $_SESSION['last_attempt_time'] = 0;
+	$_SESSION['last_attempt_time'] = 0;
 }
 
-$lockout_time = 900; 
+$lockout_time = 900;
 if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] < $lockout_time) {
-    echo '<script>alert("Too many failed login attempts. Please try again later.")</script>';
+	echo '<script>alert("Too many failed login attempts. Please try again later.")</script>';
 } else {
-    if (isset($_POST['login'])) {
+	if (isset($_POST['login'])) {
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+		$username = $_POST['username'];
+		$password = $_POST['password'];
 
-        $sql = "SELECT * FROM admin_user WHERE username = '$username' AND password = '$password'";
+		$sql = "SELECT * FROM admin_user WHERE username = '$username' AND password = '$password'";
 
-        $user = $con->query($sql) or die($con->error);
-        $row = $user->fetch_assoc();
-        $total = $user->num_rows;
+		$user = $con->query($sql) or die($con->error);
+		$row = $user->fetch_assoc();
+		$total = $user->num_rows;
 
-        if ($total > 0) {
-            $_SESSION['UserLogin'] = $row['username'];
-            $_SESSION['Access'] = $row['access'];
+		if ($total > 0) {
+			$_SESSION['UserLogin'] = $row['username'];
+			$_SESSION['Access'] = $row['access'];
 
-            // Reset login attempts on successful login
-            $_SESSION['login_attempts'] = 0;
+			// Reset login attempts on successful login
+			$_SESSION['login_attempts'] = 0;
 
-            echo header("location: dashboard.php");
+			echo header("location: index.php");
+		} else {
+			// Increment login attempts and update last attempt time
+			$_SESSION['login_attempts']++;
+			$_SESSION['last_attempt_time'] = time();
 
-        } else {
-            // Increment login attempts and update last attempt time
-            $_SESSION['login_attempts']++;
-            $_SESSION['last_attempt_time'] = time();
-
-            // echo '<script>alert("Incorrect Credentials!")</script>';
-        }
-
-    } elseif (isset($_POST['forgot_password'])) {
-        $email = $_POST['email'];
-        echo '<script>alert("Password reset, instructions sent to your email.");</script>';
-    }
+			// echo '<script>alert("Incorrect Credentials!")</script>';
+		}
+	} elseif (isset($_POST['forgot_password'])) {
+		$email = $_POST['email'];
+		echo '<script>alert("Password reset, instructions sent to your email.");</script>';
+	}
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 	<!-- Fontawesome CSS -->
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
@@ -70,9 +69,9 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="assets/css/style.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
-    <style>
+	<style>
 		body {
 			height: 100vh;
 			margin: 0;
@@ -218,24 +217,24 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 				<p class="login-subheader">Please enter your details</p>
 
 				<!-- Display Bootstrap alert for incorrect credentials -->
-                <?php
-                if (isset($_POST['login']) && $total === 0) {
-                    echo '<div class="alert alert-danger" role="alert">Incorrect Credentials!</div>';
-                }
-                ?>
+				<?php
+				if (isset($_POST['login']) && $total === 0) {
+					echo '<div class="alert alert-danger" role="alert">Incorrect Credentials!</div>';
+				}
+				?>
 
 				<form method="POST" enctype="multipart/form-data">
 					<div class="form-group">
-                    <i class="fas fa-user icon"></i>
+						<i class="fas fa-user icon"></i>
 						<input class="form-control" type="text" name="username" placeholder="username" id="username" required>
 					</div>
-					
+
 					<div class="form-group">
 						<i class="fas fa-lock icon"></i>
-						
+
 						<input class="form-control" type="password" name="password" placeholder="password" id="password" required>
 					</div>
-					
+
 					<div class="form-group text-center">
 						<div class="col-auto pt-2">
 							<a class="float-left forgot-password" href="forgot-password.php">
@@ -264,17 +263,18 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 	<!-- Custom JS -->
 	<script src="assets/js/app.js"></script>
 
-    <script>
-        // JavaScript functions to show and hide the modal
-        function openModal() {
-        document.getElementById('forgotPasswordModal').style.display = 'flex';
-    }
+	<script>
+		// JavaScript functions to show and hide the modal
+		function openModal() {
+			document.getElementById('forgotPasswordModal').style.display = 'flex';
+		}
 
-    function closeModal() {
-        document.getElementById('forgotPasswordModal').style.display = 'none';
-        // Clear the input field when the modal is closed
-        document.getElementById('email').value = '';
-    }
-    </script>
+		function closeModal() {
+			document.getElementById('forgotPasswordModal').style.display = 'none';
+			// Clear the input field when the modal is closed
+			document.getElementById('email').value = '';
+		}
+	</script>
 </body>
+
 </html>

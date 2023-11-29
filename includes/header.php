@@ -6,9 +6,6 @@
         justify-content: center;
         align-items: center;
     }
-    .header{
-        background-color: #f4f4f4;
-    }
 
     .day {
         font-size: 20px;
@@ -47,12 +44,7 @@
     .user-img img,
     .user-img span {
         margin: 0;
-        margin-top:5px;
-        width: 10px;
-    }
-    .user-img img{
-        height: 10px;
-        width: 10px;
+        width: 1.2rem;
     }
 
     .user-container .nav-link {
@@ -70,15 +62,14 @@
     .bar-icon span {
         background-color: #000;
     }
-    .header-left{
-        background-color: #18372E;
-    }
 </style>
 
 <div class="header">
     <!-- LOGO -->
     <div class="header-left">
-        
+        <a href="index.php" class="logo">
+            <!-- <img src="assets/img/pcc-logo.png" width="40" height="40" alt="PCC Logo"> -->
+        </a>
     </div>
 
     <!-- SIDEBAR TOGGLE -->
@@ -126,14 +117,14 @@
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
-                        <!-- <li class="notification-message">
+                        <li class="notification-message">
                             <a href="#">
                                 <div class="media">
                                     <span class="avatar">
                                         <img alt="" src="assets/img/profiles/avatar-02.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+                                        <p class="noti-details"><span class="noti-title">Anonymous</span> added new employee <span class="noti-title">Equipment Inventory</span></p>
                                         <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
                                     </div>
                                 </div>
@@ -146,7 +137,7 @@
                                         <img alt="" src="assets/img/profiles/avatar-03.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+                                        <p class="noti-details"><span class="noti-title">Anonymous</span> changed the profile name <span class="noti-title">Super Admin</span></p>
                                         <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
                                     </div>
                                 </div>
@@ -159,8 +150,8 @@
                                         <img alt="" src="assets/img/profiles/avatar-06.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
-                                        <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+                                        <p class="noti-details"><span class="noti-title">Anonymous</span> changed the add hospital <span class="noti-title">Cancer Repository</span></p>
+                                        <p class="noti-time"><span class="notification-time">21 mins ago</span></p>
                                     </div>
                                 </div>
                             </a>
@@ -172,8 +163,8 @@
                                         <img alt="" src="assets/img/profiles/avatar-17.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
-                                        <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+                                        <p class="noti-details"><span class="noti-title">Anonymous</span> Accepted Leave Request <span class="noti-title">Human Resource</span></p>
+                                        <p class="noti-time"><span class="notification-time">12 hrs ago</span></p>
                                     </div>
                                 </div>
                             </a>
@@ -185,12 +176,12 @@
                                         <img alt="" src="assets/img/profiles/avatar-13.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+                                        <p class="noti-details"><span class="noti-title">Anonymous</span> Accept Equipent Request <span class="noti-title">Equipment Inventory</span></p>
                                         <p class="noti-time"><span class="notification-time">2 days ago</span></p>
                                     </div>
                                 </div>
                             </a>
-                        </li> -->
+                        </li>
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">
@@ -199,23 +190,20 @@
             </div>
         </li>
 
-        
-
         <!-- USER PROFILE -->
         <li class="nav-item dropdown has-arrow main-drop">
             <div class="user-container" id="userDropdown">
                 <a href="#" class="nav-link" data-toggle="dropdown">
                     <span class="user-img">
-                        <img src="img/profile-user.png" alt="User Picture">
+                        <img src="img//profile-user.png" alt="User Picture">
+
                     </span>
-                    <!-- <span class="user-text">Profile</span> -->
+                    <span class="user-text">Super Admin</span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="profile.php">My Profile</a>
+                    <!-- <a class="dropdown-item" href="profile.php">My Profile</a> -->
                     <!-- <a class="dropdown-item" href="settings.php">Settings</a> -->
                     <a class="dropdown-item" href="logout.php" onclick="confirmLogout(event)">Logout</a>
-
-
                 </div>
             </div>
         </li>
@@ -226,8 +214,8 @@
     <div class="dropdown mobile-user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#">My Profile</a>
-            <!-- <a class="dropdown-item" href="settings.php">Settings</a> -->
+            <a class="dropdown-item" href="profile.php">My Profile</a>
+            <a class="dropdown-item" href="settings.php">Settings</a>
             <a class="dropdown-item" href="login.php">Logout</a>
         </div>
     </div>
@@ -235,31 +223,7 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    
-    // Logout
-function confirmLogout(event) {
-    event.preventDefault();
-
-    Swal.fire({
-        title: 'Are you sure you want to logout?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, logout!',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "logout.php";
-        } else {
-            console.log("Logout canceled");
-        }
-    });
-}
-
-
     // DATE AND TIME
     function updateDateTime() {
         let now = new Date();
@@ -294,4 +258,27 @@ function confirmLogout(event) {
     setInterval(updateDateTime, 1000);
 
     updateDateTime();
+
+
+    function confirmLogout(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "logout.php";
+            } else {
+                console.log("Logout canceled");
+            }
+        });
+    }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
