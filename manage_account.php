@@ -10,23 +10,26 @@ if (!isset($_SESSION['UserLogin'])) {
 include_once("connections/connection.php");
 $conn = connection();
 
-// FOR PASSWORD CONFIRMATION BEFORE DELETE
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
-    $delete_id = $_POST['delete_id'];
-    $password = $_POST['password'];
+    $id = $_POST['delete_id'];
+    $pw = $_POST['password'];
 
     // Fetch user data from the database based on ID
-    $sql_fetch = "SELECT * FROM user_list WHERE id = '$delete_id'";
-    $result_fetch = $conn->query($sql_fetch);
+    $sqlFetch = "SELECT * FROM user_list WHERE id = '$id'";
+    $resultFetch = $conn->query($sqlFetch);
 
-    if ($result_fetch->num_rows > 0) {
-        $row = $result_fetch->fetch_assoc();
+    $sqlFetchAdminPw = "SELECT password FROM admin_user WHERE sa_id = 1"; // Assuming the admin user has ID 1
+    $resultFetchAdminPw = $conn->query($sqlFetchAdminPw);
+
+    if ($resultFetch->num_rows > 0 && $resultFetchAdminPw->num_rows > 0) {
+        $row = $resultFetch->fetch_assoc();
+        $adminPwRow = $resultFetchAdminPw->fetch_assoc();
 
         // Check if the entered password matches the stored password (without hashing)
-        if ($password === $row['password']) {
+        if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
-            $sql_delete = "DELETE FROM user_list WHERE id = '$delete_id'";
-            if ($conn->query($sql_delete) === TRUE) {
+            $sqlDelete = "DELETE FROM user_list WHERE id = '$id'";
+            if ($conn->query($sqlDelete) === TRUE) {
                 // Deletion successful
                 echo '<script>
                     setTimeout(function(){
@@ -68,8 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
         }
     }
 }
-
-
 
 $sql = "SELECT * FROM user_list";
 $result = $conn->query($sql);
