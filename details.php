@@ -44,20 +44,23 @@ $row = $students->fetch_assoc();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         .id-card-container{
-            display: none;
+            
+            display: inline-block;
         }
         .page-wrapper{
   padding: 1.5em;
 }
         .id-card {
-      height: 1013px ;
-      width: 638px;
+      height: 600px ;
+      width: 360px;
       background-color: #fff;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative; 
       margin-right: 20px;
+      margin-bottom: 1em;
+      
     }
 
     .header11 {
@@ -68,43 +71,44 @@ $row = $students->fetch_assoc();
       border-bottom-right-radius: 50%;
       padding: 20px 0;
       
-      height: 600px;
-      padding-top: 4em;
+      height: 320px;
+      padding-top: 1em;
       display: flex;
       align-items: left;
       justify-content: center;
       text-align: center;
     }
     .header11 img{
-        height: 100px;
-      width: 100px;
+        height: 50px;
+      width: 50px;
       margin-right:15px;
 
     }
     .header11 h2{
-        font-size:40px;
+        font-size:35px;
         font-weight: bold;
         color:#806767;
     }
     .header11 h4{
         margin-top: -10px;
-        font-size: 25px;
+        font-size: 20px;
         margin-left: -.9em;
     }
 
     .profile-picture {
       text-align: center;
       padding: 20px;
-      margin-top: -25em;
+      margin-top: -26em;
       margin-bottom: 7em;
     }
 
     .profile-picture img {
-      width: 300px;
-      height: 300px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       border: solid 3px green;
       object-fit: cover;
+      margin-top: 11.5em;
     }
 
     .details {
@@ -113,7 +117,8 @@ $row = $students->fetch_assoc();
     }
     .details p{
         font-weight: bold;
-        font-size:45px;
+        font-size:40px;
+        margin-top: -1.5em;
         letter-spacing:-2px;
     }
 
@@ -124,38 +129,41 @@ $row = $students->fetch_assoc();
   transform: translateX(-50%);
   text-align: center;
   background-color: #806666;
-  width: 80%;
+  width: 60%;
   border-radius: 11px;
   color: #fff;
   padding: 10px ;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
       
     }
     .id-number p{
-        font-size: 27px;
+        font-size: 18px;
     }
     
     .sign{
-        align-items: left;
+        align-items: center;
       justify-content: center;
       text-align: center;
       
     }
-    .sign input{
-        padding:35 80px;
+    .sign{
+        padding:30px;
+        width: 70%;
+        border: 1px solid black;
         background-color:#F9F9F9;
+        border-radius: 8px;
     }
 
     .sign p{
-        font-size: 25px;
+        font-size: 18px;
         margin-top: 1em;
     }
     .backID{
         margin-left: 3.6em;
         
       margin-right: 30px;
-        margin-top: 7em;
-        font-size: 24px;
+        margin-top: 3em;
+        font-size: 18px;
         margin-bottom: 5em;
     }
 
@@ -163,7 +171,7 @@ $row = $students->fetch_assoc();
       background-color: #D9DD2D;
       color: #806767;
       text-align: left;
-      margin-top:12em;
+      margin-top:5em;
       padding: 20px 0;
       height: 200px;
       padding-top: 4em;
@@ -174,31 +182,34 @@ $row = $students->fetch_assoc();
     }
     
     .logoBack img{
-        height: 100px;
-      width: 100px;
+        height: 60px;
+      width: 60px;
       margin-right:-7em;
       margin-top: -2.2em;
-      margin-left: -20em;
+      margin-left: -10em;
 
     }
     
     .logoBack h4{
         margin-top: -10px;
-        font-size: 20px;
+        font-size: 10px;
         margin-left: -2.5em;
     }
     #backFoot{
         align-items: left;
       justify-content: left;
       text-align: left;
-      margin-top: -1em;
-      margin-left: -2em;
+      margin-top: -2em;
+      margin-left: 1em;
+    }
+    #backFoot h5{
+      font-size: 12px;
     }
 
     
     .user-details img{
-      height :150px;
-      width :150px;
+      height :120px;
+      width :120px;
       border-radius: 50%;
       border: solid 2px green;
       object-fit: cover;
@@ -338,6 +349,9 @@ $row = $students->fetch_assoc();
           padding-left: 4em;
           padding-right: 4em;
         }
+      .id-card-container, .id-card{
+        display: inline-block;
+      }
         
     </style>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -446,14 +460,26 @@ $row = $students->fetch_assoc();
 
          <center>
          <br><br>
-    <button class="print-button" id="pid" onclick="printIDCard()">Print ID Card</button>
+         <button class="print-button" id="pid" onclick="openIDCardModal()">Print ID Card</button>
          </center>       
        
 
     </div>
 
 
-    <!-- ID Card -->
+    <div class="modal fade" id="idCardModal" tabindex="-1" role="dialog" aria-labelledby="idCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="idCardModalLabel">ID Card Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="idCardPreview">
+                <!-- ID Card content will be displayed here -->
+                <!-- ID Card -->
+                
     <div class="id-card-container" id="id-card-print">
     <div class="id-card">
   <div class="header11">
@@ -500,12 +526,12 @@ $row = $students->fetch_assoc();
     <p><strong>Valid Until: </strong> <?php echo date("F, Y", strtotime("+365 days")); ?></p>
     </div>
    
-
+<center>
     <div class="sign">
-        <input type="text">
-        <p>Signature</p>
     </div>
-
+    
+    <p>Signature</p>
+    </center>
     <div class="logoBack">
         <div>
             <img src="img/doh.png" alt="">
@@ -517,10 +543,19 @@ $row = $students->fetch_assoc();
 
         </div>
         
-
   </div>
   
+  
     </div>
+    <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printIDCard()">Print</button>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
 
     <!-- ID back -->
 
@@ -554,6 +589,26 @@ $row = $students->fetch_assoc();
 
     <!-- Custom JS -->
     <script src="assets/js/app.js"></script>
+
+    <script>
+    function openIDCardModal() {
+        var idCardContent = document.getElementById("id-card-print").innerHTML;
+        document.getElementById("idCardPreview").innerHTML = idCardContent;
+        $('#idCardModal').modal('show');
+    }
+
+    function printIDCard() {
+        var originalContent = document.body.innerHTML;
+        var idCardContent = document.getElementById("idCardPreview").innerHTML;
+
+        document.body.innerHTML = idCardContent;
+
+        window.print();
+
+        document.body.innerHTML = originalContent;
+        $('#idCardModal').modal('hide');
+    }
+</script>
 
   
 
