@@ -8,50 +8,6 @@ include_once("connections/connection.php");
 
 $con = connection();
 
-if (!isset($_SESSION['login_attempts'])) {
-	$_SESSION['login_attempts'] = 0;
-}
-if (!isset($_SESSION['last_attempt_time'])) {
-	$_SESSION['last_attempt_time'] = 0;
-}
-
-$lockout_time = 900;
-if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] < $lockout_time) {
-	echo '<script>alert("Too many failed login attempts. Please try again later.")</script>';
-} else {
-	if (isset($_POST['login'])) {
-
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-
-		$sql = "SELECT * FROM super_admin_users WHERE username = '$username' AND password = '$password'";
-
-		$result = pg_query($con, $sql) or die(pg_last_error($con));
-		$row = pg_fetch_assoc($result);
-		$total = pg_num_rows($result);
-
-		if ($total > 0) {
-			$_SESSION['UserLogin'] = $row['username'];
-			$_SESSION['Access'] = $row['access'];
-
-			// Reset login attempts on successful login
-			$_SESSION['login_attempts'] = 0;
-
-			header("location: index.php");
-			exit();
-		} else {
-			// Increment login attempts and update last attempt time
-			$_SESSION['login_attempts']++;
-			$_SESSION['last_attempt_time'] = time();
-
-			// echo '<script>alert("Incorrect Credentials!")</script>';
-		}
-	} elseif (isset($_POST['forgot_password'])) {
-		$email = $_POST['email'];
-		echo '<script>alert("Password reset, instructions sent to your email.");</script>';
-	}
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +37,7 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 			height: 100vh;
 			margin: 0;
 			padding: 0;
+            background-color: #101414;
 		}
 
 		.main-wrapper {
@@ -109,11 +66,8 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 		}
 
 		.left-side {
-			background: linear-gradient(31.69deg,
-					rgba(29, 53, 39, 0.54) -4.28%,
-					rgba(24, 47, 33, 0.54) 46.44%,
-					rgba(4, 41, 19, 0.54) 100.43%),
-				url('img/login-img.jpg') center/cover no-repeat;
+			background: 
+				url('img/signup.jpg') center/cover no-repeat;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -192,7 +146,9 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 
 		.login-btn {
 			width: 100%;
-			border-radius: 10rem;
+			border-radius: 8px;
+            background-color: #1a9635;
+            border: 1px solid #2ab548;
 		}
 
 		.help-link a span {
@@ -203,6 +159,18 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 			font-size: 12px;
 			color: #000;
 		}
+        .form-group input{
+            background-color: #292929;
+            padding: 12px;
+            font-size: 12px;
+            color: white;
+            border: 1px solid #565657;
+            border-radius: 8px;
+            width: 100%;
+        }
+        .account-wrapper h3, p{
+            color: #ebebeb;
+        }
 	</style>
 </head>
 
@@ -210,16 +178,16 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 
 	<div class="main-wrapper">
 		<!-- LEFT SIDE CONTAINER -->
-		<div class="left-side slanted-divider">
+		<!-- <div class="left-side ">
 			<div class="account-logo">
 				<a href="index.php"><img src="img/doh.png" alt="Company Logo"></a>
 			</div>
-		</div>
+		</div> -->
 		<!-- RIGHT SIDE CONTAINER -->
 		<div class="account-content">
 			<div class="account-wrapper">
-				<h3 class="login-header">Welcome!</h3>
-				<p class="login-subheader">Please enter your details</p>
+				<h3 class="login-header">Sign up</h3>
+				<p class="login-subheader">Please enter your information</p>
 
 				<!-- Display Bootstrap alert for incorrect credentials -->
 				<?php
@@ -230,28 +198,41 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 
 				<form method="POST" enctype="multipart/form-data">
 					<div class="form-group">
-						<i class="fas fa-user icon"></i>
-						<input class="form-control" type="text" name="username" placeholder="username" id="username" required>
+						<input class="form-control" type="text" name="username" placeholder="Firstname" id="username" required>
 					</div>
 
 					<div class="form-group">
-						<i class="fas fa-lock icon"></i>
+						<input class="form-control" type="password" name="password" placeholder="Lastname" id="password" required>
+					</div>
+                    <div class="form-group">
+						<input class="form-control" type="text" name="username" placeholder="Middlename" id="username" required>
+					</div>
 
+					<div class="form-group">
+						<input class="form-control" type="password" name="password" placeholder="Gender" id="password" required>
+					</div>
+                    <div class="form-group">
+						<input class="form-control" type="text" name="username" placeholder="Age" id="username" required>
+					</div>
+
+					<div class="form-group">
+						<input class="form-control" type="password" name="password" placeholder="Address" id="password" required>
+					</div>
+                    <div class="form-group">
+						<input class="form-control" type="text" name="username" placeholder="Email" id="username" required>
+					</div>
+
+					<div class="form-group">
 						<input class="form-control" type="password" name="password" placeholder="password" id="password" required>
 					</div>
 
 					<div class="form-group text-center">
 						<div class="col-auto pt-2">
-							<!-- forget pass -->
-							<a class="float-left forgot-password" href="forgot-password.php">
-								Forgot password?
-							</a>
-							<!-- sign up -->
-							<a class="float-right forgot-password" href="signup.php">
-								Sign up
+							<a class="float-left forgot-password" href="Login.php">
+								Already an account?
 							</a>
 						</div>
-						<button class="btn btn-primary login-btn" name="login" type="submit">Login</button>
+						<button class="btn btn-primary login-btn" name="signup" type="submit">Sign up</button>
 					</div>
 				</form>
 
