@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
 
     $date = date("Y-m-d");
 
-    $check_sql = "SELECT * FROM `user_list` WHERE `firstname`='$fname' AND `lastname`='$lname' AND `email`='$email'";
+    $check_sql = "SELECT * FROM `admin_users` WHERE `firstname`='$fname' AND `lastname`='$lname' AND `email`='$email'";
     $result = $con->query($check_sql);
 
     // $empID = rand(10000000, 99999999);
@@ -56,13 +56,35 @@ if (isset($_POST['submit'])) {
     $password = substr($fname, 0, 3) . substr($lname, -3) . substr($empID, -4);
 
     if ($result->num_rows > 0) {
-        echo '<script>alert("Error: A similar account already exists!")</script>';
+        echo '<script>
+                setTimeout(function(){
+                    Swal.fire({
+                        title: "Notice!",
+                        text: "Account already existed.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                }, 500);
+            </script>';
     } else {
-        $sql = "INSERT INTO `user_list`(`firstname`, `lastname`, `middlename`, `gender`, `age`, `email`, `contact`, `address`, `department`, `empID`, `added_at`, `password`, `photo`) VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
+        $sql = "INSERT INTO `admin_users`(`firstname`, `lastname`, `middlename`, `gender`, `age`, `email`, `contact`, `address`, `department`, `empID`, `added_at`, `password`, `photo`) VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
 
         $con->query($sql) or die($con->error);
 
-        echo '<script>window.location.href = "index.php";</script>';
+        echo '<script>
+                    setTimeout(function(){
+                        Swal.fire({
+                            title: "Registration Successful!",
+                            text: "Please proceed to HR department to complete your account registration.",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "manage_account.php";
+                            }
+                        });
+                    }, 500);
+                </script>';
     }
 }
 ?>
@@ -328,6 +350,25 @@ if (isset($_POST['submit'])) {
             return confirmation;
         }
     </script>
+    <!-- <script>
+    function confirmSubmission() {
+        Swal.fire({
+            title: "Confirmation",
+            text: "Are you sure that the information details are correct?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, submit",
+            cancelButtonText: "No, cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.forms[0].submit();
+            }
+        });
+        return false;
+    }
+    </script> -->
+
+
 </head>
 
 <body>
@@ -472,7 +513,7 @@ if (isset($_POST['submit'])) {
 
                                     <h3 id="info-txt">Account Information</h3>
 
-                                    <label>Auto Email</label>
+                                    <label>Email</label>
                                     <input type="text" name="auto-email" value=" " id="auto-email" readonly>
 
                                     <label>Auto Generated Password</label>
@@ -523,6 +564,7 @@ if (isset($_POST['submit'])) {
                                             <br />
 
                                             <button class="btn btn-success" onclick=closePhotoCaptureModal()>Save</button>
+                                            <!-- <input type="submit" value="save" onclick=closePhotoCaptureModal()> -->
 
                                         </div>
 
@@ -541,6 +583,7 @@ if (isset($_POST['submit'])) {
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

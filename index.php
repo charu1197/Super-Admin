@@ -10,10 +10,24 @@ include_once("connections/connection.php");
 
 $con = connection();
 
-$sql = "SELECT COUNT(*) as totalAdmins FROM user_list WHERE department IN ('HR', 'INVENTORY', 'REPOSITORY')";
+//total HR
+$sql = "SELECT COUNT(*) as totalHR FROM admin_users WHERE department IN ('HR')";
 $result = $con->query($sql) or die($con->error);
 $row = $result->fetch_assoc();
-$totalAdmins = $row['totalAdmins'];
+$totalHR = $row['totalHR'];
+
+//total Repo
+$sql = "SELECT COUNT(*) as totalRepo FROM admin_users WHERE department IN ('REPOSITORY')";
+$result = $con->query($sql) or die($con->error);
+$row = $result->fetch_assoc();
+$totalRepo = $row['totalRepo'];
+
+
+// total inventory
+$sql = "SELECT COUNT(*) as totalInventory FROM admin_users WHERE department IN ('INVENTORY')";
+$result = $con->query($sql) or die($con->error);
+$row = $result->fetch_assoc();
+$totalInventory = $row['totalInventory'];
 
 $today = date('Y-m-d'); // Get the current date
 $sqlActivity = "SELECT COUNT(*) as totalActivities FROM activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
@@ -21,7 +35,7 @@ $resultActivity = $con->query($sqlActivity) or die($con->error);
 $rowActivity = $resultActivity->fetch_assoc();
 $totalActivities = $rowActivity['totalActivities'];
 
-$sql = "SELECT * FROM user_list ORDER BY id DESC";
+$sql = "SELECT * FROM admin_users ORDER BY id DESC";
 $students = $con->query($sql) or die($con->error);
 $row = $students->fetch_assoc();
 ?>
@@ -201,9 +215,60 @@ $row = $students->fetch_assoc();
         <div class="page-wrapper">
             <div class="content container-fluid">
 
-                <!-- ATTENDANCE TABLE -->
+                <!-- METRICS -->
                 <div class="row">
-                    <div class="col-md-7 col-sm-7 col-lg-7 col-xl-7">
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalHR; ?></h3>
+                                    <span>Total HR</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalRepo; ?></h3>
+                                    <span>Total Repo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalInventory; ?></h3>
+                                    <span>Total Inventory</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalActivities; ?></h3>
+                                    <span>Today's Activity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="container">
                             <h2 class="mt-3 mb-4">Today's Attendance</h2>
 
@@ -248,46 +313,16 @@ $row = $students->fetch_assoc();
                         </div>
                     </div>
 
-                    <!-- METRICS -->
-                    <div class="col-md-5 col-sm-5 col-lg-5 col-xl-5">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                                <div class="card dash-widget card-height">
-                                    <div class="card-body card-align">
-                                        <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                        <div class="dash-widget-info">
-                                            <h3><?php echo $totalAdmins; ?></h3>
-                                            <span>Total Admins</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                                <div class="card dash-widget card-height">
-                                    <div class="card-body card-align">
-                                        <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                                        <div class="dash-widget-info">
-                                            <h3><?php echo $totalActivities; ?></h3>
-                                            <span>Today's Activity</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <!-- ABSENCE RATE CHART -->
             <div class="row">
-                <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+                <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                     <div class="container mt-2">
                         <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                            <div id="chartContainer" style="width: 100%; height: 500px;">
-                                <canvas id="absenceChart"></canvas>
+                            <div id="chartContainer" style="width: 100%; height: 530px;">
+                                <center><canvas id="absenceChart"></canvas></center>
                             </div>
                         </div>
                     </div>

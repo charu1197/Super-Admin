@@ -24,7 +24,7 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
-		$sql = "SELECT * FROM admin_user WHERE username = '$username' AND password = '$password'";
+		$sql = "SELECT * FROM super_admin_users WHERE username = '$username' AND password = '$password'";
 
 		$user = $con->query($sql) or die($con->error);
 		$row = $user->fetch_assoc();
@@ -57,9 +57,13 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="This is a Philippine Cancer Center HR Management System">
+    <meta name="keywords" content="PCC-HRMS, HRMS, Human Resource, Capstone, System, HR">
+    <meta name="author" content="Heionim">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PCC Super Admin Login</title>
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 	<!-- Fontawesome CSS -->

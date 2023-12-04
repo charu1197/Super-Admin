@@ -11,7 +11,7 @@ include_once("connections/connection.php");
 $con = connection();
 $id = $_GET['ID'];
 
-$sql = "SELECT * FROM user_list WHERE id = '$id'";
+$sql = "SELECT * FROM admin_users WHERE id = '$id'";
 $students = $con->query($sql) or die($con->error);
 $row = $students->fetch_assoc();
 
@@ -30,11 +30,25 @@ if (isset($_POST['submit'])) {
   $date = $_POST['date'];
   $password = $_POST['password'];
 
-  $sql = "UPDATE user_list SET firstname = '$fname', lastname = '$lname', middlename = '$mname', age = '$age', email = '$email', contact = '$contact', address = '$address', department = '$department', empID = '$empID', added_at = '$date', password = '$password' WHERE id = '$id'";
+  $sql = "UPDATE admin_users SET firstname = '$fname', lastname = '$lname', middlename = '$mname', age = '$age', email = '$email', contact = '$contact', address = '$address', department = '$department', empID = '$empID', added_at = '$date', password = '$password' WHERE id = '$id'";
 
   $con->query($sql) or die($con->error);
 
-  echo header("location: details.php?ID=" . $id);
+  // echo header("location: details.php?ID=" . $id);
+  echo '<script>
+    setTimeout(function(){
+        Swal.fire({
+            title: "Success!",
+            text: "Admin Update successfully",
+            icon: "success",
+            confirmButtonText: "OK"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "details.php?ID=' . $id . '";
+            }
+        });
+    }, 500);
+</script>';
 }
 
 ?>

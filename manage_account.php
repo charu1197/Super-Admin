@@ -15,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $pw = $_POST['password'];
 
     // Fetch user data from the database based on ID
-    $sqlFetch = "SELECT * FROM user_list WHERE id = '$id'";
+    $sqlFetch = "SELECT * FROM admin_users WHERE id = '$id'";
     $resultFetch = $conn->query($sqlFetch);
 
-    $sqlFetchAdminPw = "SELECT password FROM admin_user WHERE sa_id = 1"; // Assuming the admin user has ID 1
+    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = 1"; // Assuming the admin user has ID 1
     $resultFetchAdminPw = $conn->query($sqlFetchAdminPw);
 
     if ($resultFetch->num_rows > 0 && $resultFetchAdminPw->num_rows > 0) {
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
         // Check if the entered password matches the stored password (without hashing)
         if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
-            $sqlDelete = "DELETE FROM user_list WHERE id = '$id'";
+            $sqlDelete = "DELETE FROM admin_users WHERE id = '$id'";
             if ($conn->query($sqlDelete) === TRUE) {
                 // Deletion successful
                 echo '<script>
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     }
 }
 
-$sql = "SELECT * FROM user_list";
+$sql = "SELECT * FROM admin_users";
 $result = $conn->query($sql);
 ?>
 
@@ -170,6 +170,10 @@ $result = $conn->query($sql);
             border-radius: 5px;
             padding: 8px 2rem;
         }
+       #action-btn{
+        padding: 5px 10px 5px 10px;
+       }
+        
     </style>
 </head>
 
@@ -217,7 +221,7 @@ $result = $conn->query($sql);
                     </div>
 
                     <!-- TABLE -->
-                    <div class="row">
+                    <div class="row" id="tbl">
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table class="table table-striped custom-table datatable">
@@ -247,11 +251,11 @@ $result = $conn->query($sql);
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['contact']; ?></td>
                                                     <td>
-                                                        <a href="details.php?ID=<?php echo $row['id'] ?>" title="View" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
-                                                        <a href="edit_admin.php?ID=<?php echo $row['id'] ?>" title="Edit" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
+                                                        <a href="details.php?ID=<?php echo $row['id'] ?>" title="View"  id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
+                                                        <a href="edit_admin.php?ID=<?php echo $row['id'] ?>" title="Edit"  id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
 
                                                         <!-- Delete button with a password confirmation -->
-                                                        <button type="button" class="btn text-xs text-white btn-danger action-icon" data-toggle="modal" data-target="#confirmDelete<?php echo $row['id']; ?>"><i class="fa fa-trash-o"></i></button>
+                                                        <button type="button" id="action-btn" class="btn text-xs text-white btn-danger action-icon" data-toggle="modal" data-target="#confirmDelete<?php echo $row['id']; ?>"><i class="fa fa-trash-o"></i></button>
 
                                                         <!-- Modal for delete confirmation -->
                                                         <div class="modal custom-modal fade" id="confirmDelete<?php echo $row['id']; ?>" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
