@@ -15,7 +15,7 @@ if (!isset($_SESSION['last_attempt_time'])) {
 	$_SESSION['last_attempt_time'] = 0;
 }
 
-$lockout_time = 900;
+$lockout_time = 10;
 if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] < $lockout_time) {
 	echo '<script>alert("Too many failed login attempts. Please try again later.")</script>';
 } else {
@@ -34,17 +34,14 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 			$_SESSION['UserLogin'] = $row['email'];
 			$_SESSION['Access'] = $row['access'];
 
-			// Reset login attempts on successful login
 			$_SESSION['login_attempts'] = 0;
 
 			header("location: index.php");
 			exit();
 		} else {
-			// Increment login attempts and update last attempt time
 			$_SESSION['login_attempts']++;
 			$_SESSION['last_attempt_time'] = time();
 
-			// echo '<script>alert("Incorrect Credentials!")</script>';
 		}
 	} elseif (isset($_POST['forgot_password'])) {
 		$email = $_POST['email'];
