@@ -17,7 +17,7 @@ if (isset($_POST['signup'])) {
 	$access = $_POST['access'];
     $email = $_POST['email'];
 	$contact = $_POST['contact'];
-	$date_created = $_POST['date_created'];
+	$date_created = date('Y-m-d');
 	$password = $_POST['password'];
     // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
@@ -72,6 +72,15 @@ if (isset($_POST['signup'])) {
 		#access{
 			display: none;
 		}
+		#date_created{
+			display: none;
+		}
+		#link{
+			margin-top: -7em;
+		}
+		button{
+			margin-top: -3em;
+		}
 	</style>
 </head>
 
@@ -116,17 +125,18 @@ if (isset($_POST['signup'])) {
 						<div class="form-group">
 							<input class="form-control" type="text" name="age" placeholder="Age" id="age" required>
 						</div>
-						<div class="form-group">
-							<input class="form-control" type="text" name="contact" placeholder="contact" id="contact" required>
-						</div>
+						
 					</div>
 
 					<div class="column">
+					<div class="form-group">
+							<input class="form-control" type="text" name="contact" placeholder="contact" id="contact" required>
+						</div>
 						<div class="form-group">
 							<input class="form-control" type="text" name="address" placeholder="Address" id="address" required>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="date" name="date_created" placeholder="date_created" id="date_created" required>
+							<input class="form-control" type="date" name="date_created" placeholder="date_created" id="date_created">
 						</div>
 						<div class="form-group">
 							<input class="form-control" type="text" name="email" placeholder="Email" id="email" required>
@@ -154,7 +164,7 @@ if (isset($_POST['signup'])) {
 
 					<div class="form-group text-center">
 						<div class="col-auto pt-2">
-							<a class="float-left forgot-password" href="Login.php">
+							<a class="float-left forgot-password" id="link" href="Login.php">
 								Already an account?
 							</a>
 						</div>
@@ -208,7 +218,7 @@ if (isset($_POST['signup'])) {
             passwordNotMatch.innerHTML = "Passwords do not match";
 
             // Set border color to red when passwords do not match
-            passwordInput.style.border = "1px solid red";
+            passwordInput.style.border = "";
             confirmPasswordInput.style.border = "1px solid red";
 
             return false; // Prevent form submission
