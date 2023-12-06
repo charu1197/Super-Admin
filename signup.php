@@ -21,6 +21,8 @@ if (isset($_POST['signup'])) {
 	$password = $_POST['password'];
     // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
+	
+
     $sql = "INSERT INTO super_admin_users (firstname, lastname, middlename, gender, age, address, access, email, contact, date_created, password)
         VALUES ('$firstname', '$lastname', '$middlename', '$gender', '$age', '$address', '$access', '$email', '$contact', '$date_created', '$password')";
 
@@ -67,7 +69,9 @@ if (isset($_POST['signup'])) {
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
 	<style>
-		
+		#access{
+			display: none;
+		}
 	</style>
 </head>
 
@@ -75,11 +79,11 @@ if (isset($_POST['signup'])) {
 
 	<div class="main-wrapper">
 		<!-- LEFT SIDE CONTAINER -->
-		<!-- <div class="left-side ">
+		<div class="left-side ">
 			<div class="account-logo">
-				<a href="index.php"><img src="img/signup.jpg" alt="Company Logo"></a>
+				<a href="index.php"><img src="img/signup-bg.png" alt="Company Logo"></a>
 			</div>
-		</div> -->
+		</div>
 		<!-- RIGHT SIDE CONTAINER -->
 		<div class="account-content">
 			<div class="account-wrapper">
@@ -128,10 +132,7 @@ if (isset($_POST['signup'])) {
 							<input class="form-control" type="text" name="email" placeholder="Email" id="email" required>
 						</div>
 						<div class="form-group">
-							<select name="access" id="access" required>
-								<option value="" disabled selected>Access</option>
-								<option value="Male">Super Admin</option>
-							</select>
+							<input class="form-control" type="text" name="access" Value="Super Admin" id="access" required>
 						</div>
 						
 
@@ -145,10 +146,11 @@ if (isset($_POST['signup'])) {
 
 						</div>
 					</div>
+					<br><br>
 						<!-- Indication messages -->
 						<div id="passwordMatch"></div>
 						<div id="passwordNotMatch"></div>
-						<br>
+						
 
 					<div class="form-group text-center">
 						<div class="col-auto pt-2">
@@ -181,24 +183,40 @@ if (isset($_POST['signup'])) {
 
 
 	<script>
-        function validatePasswords() {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirmpassword").value;
+    function validatePasswords() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmpassword").value;
 
-            var passwordMatch = document.getElementById("passwordMatch");
-            var passwordNotMatch = document.getElementById("passwordNotMatch");
+        var passwordMatch = document.getElementById("passwordMatch");
+        var passwordNotMatch = document.getElementById("passwordNotMatch");
 
-            if (password === confirmPassword) {
-                passwordMatch.innerHTML = "Password match";
-                passwordNotMatch.innerHTML = "";
-                return true; // Allow form submission
-            } else {
-                passwordMatch.innerHTML = "";
-                passwordNotMatch.innerHTML = "Passwords do not match";
-                return false; // Prevent form submission
-            }
+        // Get references to the password input fields
+        var passwordInput = document.getElementById("password");
+        var confirmPasswordInput = document.getElementById("confirmpassword");
+
+        if (password === confirmPassword) {
+            passwordMatch.innerHTML = "Password match";
+            passwordNotMatch.innerHTML = "";
+
+            // Reset border color when passwords match
+            passwordInput.style.border = "";
+            confirmPasswordInput.style.border = "";
+
+            return true; // Allow form submission
+        } else {
+            passwordMatch.innerHTML = "";
+            passwordNotMatch.innerHTML = "Passwords do not match";
+
+            // Set border color to red when passwords do not match
+            passwordInput.style.border = "1px solid red";
+            confirmPasswordInput.style.border = "1px solid red";
+
+            return false; // Prevent form submission
         }
-	</script>
+    }
+</script>
+
+
 
 
 </body>

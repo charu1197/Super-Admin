@@ -3,9 +3,9 @@ session_start();
 
 include_once("connections/connection.php");
 $con = connection();
-//$id = $_GET['id'];
+$id = $_GET['admin_id'];
 
-$sql = "SELECT * FROM admin_users WHERE id = '$id'";
+$sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
 $students = $con->query($sql) or die($con->error);
 // Check if the query returned any results
 if ($students->num_rows > 0) {
