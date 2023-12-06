@@ -36,7 +36,7 @@ $resultActivity = pg_query($con, $sqlActivity) or die("SQL Error: " . pg_last_er
 $rowActivity = pg_fetch_assoc($resultActivity);
 $totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
 
-$sql = "SELECT * FROM admin_users ORDER BY id DESC";
+$sql = "SELECT * FROM admin_users ORDER BY admin_id DESC";
 $students = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
 $row = pg_fetch_assoc($students);
 ?>

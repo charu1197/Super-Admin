@@ -16,20 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
 
     // Fetch user data from the database based on ID
     $sqlFetch = "SELECT * FROM admin_users WHERE id = '$id'";
-    $resultFetch = $conn->query($sqlFetch);
+    $resultFetch = $conn->pg_query($sqlFetch);
 
     $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = 1"; // Assuming the admin user has ID 1
-    $resultFetchAdminPw = $conn->query($sqlFetchAdminPw);
+    $resultFetchAdminPw = $conn->pg_query($sqlFetchAdminPw);
 
     if ($resultFetch->num_rows > 0 && $resultFetchAdminPw->num_rows > 0) {
-        $row = $resultFetch->fetch_assoc();
-        $adminPwRow = $resultFetchAdminPw->fetch_assoc();
+        $row = $resultFetch->pg_fetch_assoc();
+        $adminPwRow = $resultFetchAdminPw->pg_fetch_assoc();
 
         // Check if the entered password matches the stored password (without hashing)
         if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
             $sqlDelete = "DELETE FROM admin_users WHERE id = '$id'";
-            if ($conn->query($sqlDelete) === TRUE) {
+            if ($conn->pg_query($sqlDelete) === TRUE) {
                 // Deletion successful
                 echo '<script>
                     setTimeout(function(){
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
 }
 
 $sql = "SELECT * FROM admin_users";
-$result = $conn->query($sql);
+$result = $conn->pg_query($sql);
 ?>
 
 

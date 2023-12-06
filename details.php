@@ -20,7 +20,7 @@ $con = connection();
 
 $id = $_GET['ID'];
 
-$sql = "SELECT * FROM admin_users WHERE id = '$id'";
+$sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
 $students = $con->query($sql) or die ($con->error);
 $row = $students->fetch_assoc();
 

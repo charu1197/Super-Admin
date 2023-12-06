@@ -14,7 +14,7 @@ $con = connection();
 $id = $_GET['sa_id'];
 
 $sql = "SELECT * FROM super_admin_users WHERE sa_id = $1";
-$result = pg_query_params($con, $sql, array($id));
+$result = pg_query($con, $sql, array($id));
 
 $row = pg_fetch_assoc($result);
 
