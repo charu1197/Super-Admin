@@ -10,15 +10,16 @@ if (!isset($_SESSION['UserLogin'])) {
 include_once("connections/connection.php");
 $conn = connection();
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
     $pw = $_POST['password'];
 
     // Fetch user data from the database based on ID
-    $sqlFetch = "SELECT * FROM admin_users WHERE id = '$id'";
+    $sqlFetch = "SELECT * FROM admin_users WHERE admin_id = '$id'";
     $resultFetch = $conn->pg_query($sqlFetch);
 
-    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = 1"; // Assuming the admin user has ID 1
+    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id"; // Assuming the admin user has ID 1 / i remove the sa_id = 1 at the last
     $resultFetchAdminPw = $conn->pg_query($sqlFetchAdminPw);
 
     if ($resultFetch->num_rows > 0 && $resultFetchAdminPw->num_rows > 0) {
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
         // Check if the entered password matches the stored password (without hashing)
         if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
-            $sqlDelete = "DELETE FROM admin_users WHERE id = '$id'";
+            $sqlDelete = "DELETE FROM admin_users WHERE admin_id = '$id'";
             if ($conn->pg_query($sqlDelete) === TRUE) {
                 // Deletion successful
                 echo '<script>
@@ -72,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     }
 }
 
-$sql = "SELECT * FROM admin_users";
-$result = $conn->pg_query($sql);
+// $sql = "SELECT * FROM admin_users";
+// $resultFetch = $conn->pg_query($sql);
 ?>
 
 
@@ -238,10 +239,10 @@ $result = $conn->pg_query($sql);
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if ($result->num_rows > 0) {
+                                        if ($resultFetch->num_rows > 0) {
                                             $rowNumber = 1; // Initialize the row number
 
-                                            while ($row = $result->fetch_assoc()) {
+                                            while ($row = $resultFetch->fetch_assoc()) {
                                         ?>
                                                 <tr>
                                                     <td><?php echo $rowNumber; ?></td>
@@ -251,14 +252,14 @@ $result = $conn->pg_query($sql);
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['contact']; ?></td>
                                                     <td>
-                                                        <a href="details.php?ID=<?php echo $row['id'] ?>" title="View"  id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
-                                                        <a href="edit_admin.php?ID=<?php echo $row['id'] ?>" title="Edit"  id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
+                                                        <a href="details.php?ID=<?php echo $row['admin_id'] ?>" title="View"  id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
+                                                        <a href="edit_admin.php?ID=<?php echo $row['admin_id'] ?>" title="Edit"  id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
 
                                                         <!-- Delete button with a password confirmation -->
-                                                        <button type="button" id="action-btn" class="btn text-xs text-white btn-danger action-icon" data-toggle="modal" data-target="#confirmDelete<?php echo $row['id']; ?>"><i class="fa fa-trash-o"></i></button>
+                                                        <button type="button" id="action-btn" class="btn text-xs text-white btn-danger action-icon" data-toggle="modal" data-target="#confirmDelete<?php echo $row['admin_id']; ?>"><i class="fa fa-trash-o"></i></button>
 
                                                         <!-- Modal for delete confirmation -->
-                                                        <div class="modal custom-modal fade" id="confirmDelete<?php echo $row['id']; ?>" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal custom-modal fade" id="confirmDelete<?php echo $row['admin_id']; ?>" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -270,7 +271,7 @@ $result = $conn->pg_query($sql);
                                                                     <div class="modal-body">
                                                                         <p class="text-left">Please enter your password to confirm deletion.</p>
                                                                         <form method="post" action="">
-                                                                            <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
+                                                                            <input type="hidden" name="delete_id" value="<?php echo $row['admin_id']; ?>">
                                                                             <div class="form-group">
                                                                                 <input type="password" class="form-control" name="password" required>
                                                                             </div>
