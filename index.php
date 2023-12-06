@@ -10,35 +10,37 @@ include_once("connections/connection.php");
 
 $con = connection();
 
+
+
 //total HR
 $sql = "SELECT COUNT(*) as totalHR FROM admin_users WHERE department IN ('HR')";
-$result = pg_query($con, $sql) or die(pg_last_error($con));
+$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
 $row = pg_fetch_assoc($result);
-//$totalHR = $row['totalHR'];
+$totalHR = isset($row['totalHR']) ? $row['totalHR'] : 0;
 
 //total Repo
 $sql = "SELECT COUNT(*) as totalRepo FROM admin_users WHERE department IN ('REPOSITORY')";
-$result = pg_query($con, $sql) or die(pg_last_error($con));
+$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
 $row = pg_fetch_assoc($result);
-//$totalRepo = $row['totalRepo'];
-
+$totalRepo = isset($row['totalRepo']) ? $row['totalRepo'] : 0;
 
 // total inventory
 $sql = "SELECT COUNT(*) as totalInventory FROM admin_users WHERE department IN ('INVENTORY')";
-$result = pg_query($con, $sql) or die(pg_last_error($con));
+$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
 $row = pg_fetch_assoc($result);
-//$totalInventory = $row['totalInventory'];
+$totalInventory = isset($row['totalInventory']) ? $row['totalInventory'] : 0;
 
 $today = date('Y-m-d'); // Get the current date
 $sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
-$resultActivity = pg_query($con, $sqlActivity) or die(pg_last_error($con));
+$resultActivity = pg_query($con, $sqlActivity) or die("SQL Error: " . pg_last_error($con));
 $rowActivity = pg_fetch_assoc($resultActivity);
-//$totalActivities = $rowActivity['totalActivities'];
+$totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
 
 $sql = "SELECT * FROM admin_users ORDER BY id DESC";
-$students = pg_query($con, $sql) or die(pg_last_error($con));
+$students = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
 $row = pg_fetch_assoc($students);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -222,7 +224,7 @@ $row = pg_fetch_assoc($students);
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalHR; ?></h3> -->
+                                    <h3><?php echo $totalHR; ?></h3>
                                     <span>Total HR</span>
                                 </div>
                             </div>
@@ -234,7 +236,7 @@ $row = pg_fetch_assoc($students);
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalRepo; ?></h3> -->
+                                    <h3><?php echo $totalRepo; ?></h3>
                                     <span>Total Repo</span>
                                 </div>
                             </div>
@@ -246,7 +248,7 @@ $row = pg_fetch_assoc($students);
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalInventory; ?></h3> -->
+                                    <h3><?php echo $totalInventory; ?></h3>
                                     <span>Total Inventory</span>
                                 </div>
                             </div>
@@ -259,7 +261,7 @@ $row = pg_fetch_assoc($students);
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalActivities; ?></h3> -->
+                                    <h3><?php echo $totalActivities; ?></h3>
                                     <span>Today's Activity</span>
                                 </div>
                             </div>

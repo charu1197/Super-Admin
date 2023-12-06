@@ -7,22 +7,20 @@ if (!isset($_SESSION['UserLogin'])) {
     exit();
   }
 
-if(isset($_SESSION['Access']) && $_SESSION['Access'] == "super_admin"){
-    
-}else{
-    echo header("location: index.php");
-}
-
 include_once("connections/connection.php");
-//include_once('uth.php');
 
 $con = connection();
 
-$id = $_GET['ID'];
+$id = $_GET['sa_id'];
 
-$sql = "SELECT * FROM admin_users WHERE id = '$id'";
-$students = $con->query($sql) or die ($con->error);
-$row = $students->fetch_assoc();
+$sql = "SELECT * FROM super_admin_users WHERE sa_id = $1";
+$result = pg_query_params($con, $sql, array($id));
+
+$row = pg_fetch_assoc($result);
+
+if (!$row) {
+    die("Error fetching data: " . pg_last_error($con));
+}
 
 ?>
 
@@ -112,10 +110,10 @@ margin-left: -8em;
 
     <div class="user-details">
       <div id="phname">
-        <img src="<?php echo $row['photo']; ?>" alt="User Photo">
+        <!-- <img src="<?php echo $row['photo']; ?>" alt="User Photo"> -->
             <div class="c">
                 <h4 id="FL"><?php echo $row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname']; ?></h4>
-                <h4><?php echo $row['department']; ?> Admin</h4>
+                <h4>Super Admin</h4>
             </div>
       </div>
                 
@@ -172,109 +170,6 @@ margin-left: -8em;
            
         </div>
 
-         <center>
-         <br><br>
-         <button class="print-button" id="pid" onclick="openIDCardModal()">Print ID Card</button>
-         </center>       
-       
-
-    </div>
-
-
-    <div class="modal fade" id="idCardModal" tabindex="-1" role="dialog" aria-labelledby="idCardModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="idCardModalLabel">ID Card Preview</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="idCardPreview">
-                <!-- ID Card content will be displayed here -->
-                <!-- ID Card -->
-                
-    <div class="id-card-container" id="id-card-print">
-    <div class="id-card">
-  <div class="header11">
-        <div>
-            <img src="img/doh.png" alt="">
-        </div>
-        <div>
-            <h2>Philippine </h2>
-            <h4>Cancer Center</h4>
-        </div>
-        
-
-  </div>
-
-  <div class="profile-picture">
-    <img src="<?php echo $row['photo']; ?>" alt="">
-  </div>
-
-  <div class="details">
-    <p><?php echo $row['firstname'] . ' ' . $row['lastname']; ?></p>
-    <hr>
-    <h4><?php echo $row['department']; ?> Admin</h4>
-  </div>
-  
-<center>
-<div class="id-number">
-    <p><strong>ID No. </strong><?php echo $row['empID']; ?></p>
-  </div>
-</center>
-  
-    </div>
-
-
-
- <!-- ID back -->
-
-
-    <div class="id-card">
-  
-    <div class="backID">
-    <p><strong>Address: </strong> <?php echo $row['address']; ?></p>
-    <p><strong>Email: </strong> <?php echo $row['email']; ?></p>
-    <p><strong>Contact No.: </strong> <?php echo $row['contact']; ?></p>
-    <p><strong>Valid Until: </strong> <?php echo date("F, Y", strtotime("+365 days")); ?></p>
-    </div>
-   
-<center>
-    <div class="sign">
-    </div>
-    
-    <p>Signature</p>
-    </center>
-    <div class="logoBack">
-        <div>
-            <img src="img/doh.png" alt="">
-        </div>
-        <div id="backFoot">
-            <h5>(02) 8995 3846</h5>
-            <h5>6512 Quezon Avenue, Lung Center of the Philippines Compound <br>
-            Diliman, Quezon City, 1101</h5>
-            <h5>pccmo@doh.gov.ph</h5>
-
-        </div>
-        
-  </div>
-  
-  
-    </div>
-           <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="printIDCard()">Print</button>
-            </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-    <!-- ID back -->
-
-    
 </div>
 
             

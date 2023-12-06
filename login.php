@@ -21,17 +21,17 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 } else {
 	if (isset($_POST['login'])) {
 
-		$username = $_POST['username'];
+		$email = $_POST['email'];
 		$password = $_POST['password'];
 
-		$sql = "SELECT * FROM super_admin_users WHERE username = '$username' AND password = '$password'";
+		$sql = "SELECT * FROM super_admin_users WHERE email = '$email' AND password = '$password'";
 
 		$result = pg_query($con, $sql) or die(pg_last_error($con));
 		$row = pg_fetch_assoc($result);
 		$total = pg_num_rows($result);
 
 		if ($total > 0) {
-			$_SESSION['UserLogin'] = $row['username'];
+			$_SESSION['UserLogin'] = $row['email'];
 			$_SESSION['Access'] = $row['access'];
 
 			// Reset login attempts on successful login
@@ -231,7 +231,7 @@ if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] 
 				<form method="POST" enctype="multipart/form-data">
 					<div class="form-group">
 						<i class="fas fa-user icon"></i>
-						<input class="form-control" type="text" name="username" placeholder="username" id="username" required>
+						<input class="form-control" type="email" name="email" placeholder="email" id="email" required>
 					</div>
 
 					<div class="form-group">

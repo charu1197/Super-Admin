@@ -1,14 +1,46 @@
 <?php
-
 if (!isset($_SESSION)) {
-	session_start();
+    session_start();
 }
 
 include_once("connections/connection.php");
 
 $con = connection();
 
+if (isset($_POST['signup'])) {
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $middlename = $_POST['middlename'];
+    $gender = $_POST['gender'];
+    $age = $_POST['age'];
+    $address = $_POST['address'];
+	$access = $_POST['access'];
+    $email = $_POST['email'];
+	$contact = $_POST['contact'];
+	$date_created = $_POST['date_created'];
+	$password = $_POST['password'];
+    // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    $sql = "INSERT INTO super_admin_users (firstname, lastname, middlename, gender, age, address, access, email, contact, date_created, password)
+        VALUES ('$firstname', '$lastname', '$middlename', '$gender', '$age', '$address', '$access', '$email', '$contact', '$date_created', '$password')";
+
+
+    $result = pg_query($con, $sql) or die(pg_last_error($con));
+
+	if ($result) {
+        echo '<div class="alert alert-success" role="alert">Signup successful!</div>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert">Error during signup. Please try again.</div>';
+    }
+}
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+</html>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,147 +62,12 @@ $con = connection();
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="assets/css/style.css">
 
+	<link rel="stylesheet" href="css/signup2.css">
+
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
 	<style>
-		body {
-			height: 100vh;
-			margin: 0;
-			padding: 0;
-            background-color: #101414;
-		}
-
-		.main-wrapper {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			overflow: hidden;
-		}
-
-		.slanted-divider::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			right: -90%;
-			width: 200%;
-			transform: translateX(50%) skewX(-6deg);
-			background: #fff;
-			z-index: -1;
-		}
-
-		.left-side,
-		.account-content {
-			flex: 1;
-			position: relative;
-		}
-
-		.left-side {
-			background: 
-				url('img/signup.jpg') center/cover no-repeat;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			z-index: -2;
-		}
-
-		.account-logo img {
-			max-width: 100%;
-			width: 250px;
-			height: auto;
-		}
-
-		.account-wrapper {
-			max-width: 400px;
-			width: 100%;
-		}
-
-		.account-content {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 20px;
-		}
-
-		.login-header {
-			text-align: center;
-			margin-bottom: 0.6rem;
-			font-size: 2.2rem;
-			font-weight: 700;
-		}
-
-		.login-subheader {
-			font-size: 0.8rem;
-			text-align: center;
-			padding-bottom: 3rem;
-		}
-
-		.form-group {
-			margin-bottom: 10px;
-			position: relative;
-		}
-
-		.form-control {
-			width: calc(100% - 40px);
-			border: none;
-			border-bottom: 1px solid #ccc;
-			border-radius: 0;
-			outline: none;
-			background: none;
-			padding-left: 20px;
-			transition: border-bottom 0.3s ease;
-		}
-
-		.form-control:focus {
-			border-bottom: 2px solid #204A31;
-		}
-
-		.form-control::placeholder {
-			color: #999;
-		}
-
-		.icon {
-			position: absolute;
-			top: 50%;
-			font-size: 16px;
-			transform: translateY(-50%);
-			color: #999;
-		}
-
-		.forgot-password {
-			font-size: 10px;
-			margin: 0 0 2rem 0;
-			color: #0B72BD;
-			margin-left: -1rem;
-		}
-
-		.login-btn {
-			width: 100%;
-			border-radius: 8px;
-            background-color: #1a9635;
-            border: 1px solid #2ab548;
-		}
-
-		.help-link a span {
-			position: fixed;
-			bottom: 20px;
-			right: 20px;
-			text-align: right;
-			font-size: 12px;
-			color: #000;
-		}
-        .form-group input{
-            background-color: #292929;
-            padding: 12px;
-            font-size: 12px;
-            color: white;
-            border: 1px solid #565657;
-            border-radius: 8px;
-            width: 100%;
-        }
-        .account-wrapper h3, p{
-            color: #ebebeb;
-        }
+		
 	</style>
 </head>
 
@@ -180,51 +77,78 @@ $con = connection();
 		<!-- LEFT SIDE CONTAINER -->
 		<!-- <div class="left-side ">
 			<div class="account-logo">
-				<a href="index.php"><img src="img/doh.png" alt="Company Logo"></a>
+				<a href="index.php"><img src="img/signup.jpg" alt="Company Logo"></a>
 			</div>
 		</div> -->
 		<!-- RIGHT SIDE CONTAINER -->
 		<div class="account-content">
 			<div class="account-wrapper">
 				<h3 class="login-header">Sign up</h3>
-				<p class="login-subheader">Please enter your information</p>
+                <br>
 
-				<!-- Display Bootstrap alert for incorrect credentials -->
-				<?php
-				if (isset($_POST['login']) && $total === 0) {
-					echo '<div class="alert alert-danger" role="alert">Incorrect Credentials!</div>';
-				}
-				?>
+				<form method="POST" enctype="multipart/form-data" onsubmit="return validatePasswords()">
+				
+				<div class="row">
+					<div class="column">
+						<div class="form-group">
+							<input class="form-control" type="text" name="firstname" placeholder="Firstname" id="firstname" required>
+						</div>
 
-				<form method="POST" enctype="multipart/form-data">
-					<div class="form-group">
-						<input class="form-control" type="text" name="username" placeholder="Firstname" id="username" required>
-					</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="lastname" placeholder="Lastname" id="lastname" required>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="middlename" placeholder="Middlename" id="middlename" required>
+						</div>
+						
 
-					<div class="form-group">
-						<input class="form-control" type="password" name="password" placeholder="Lastname" id="password" required>
-					</div>
-                    <div class="form-group">
-						<input class="form-control" type="text" name="username" placeholder="Middlename" id="username" required>
-					</div>
-
-					<div class="form-group">
-						<input class="form-control" type="password" name="password" placeholder="Gender" id="password" required>
-					</div>
-                    <div class="form-group">
-						<input class="form-control" type="text" name="username" placeholder="Age" id="username" required>
-					</div>
-
-					<div class="form-group">
-						<input class="form-control" type="password" name="password" placeholder="Address" id="password" required>
-					</div>
-                    <div class="form-group">
-						<input class="form-control" type="text" name="username" placeholder="Email" id="username" required>
+						<div class="form-group">
+						<select name="gender" id="gender" required>
+							<option value="" disabled selected>Select a gender</option>
+							<option id="options" value="Male">Male</option>
+							<option id="options" value="Female">Female</option>
+						</select>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="age" placeholder="Age" id="age" required>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="contact" placeholder="contact" id="contact" required>
+						</div>
 					</div>
 
-					<div class="form-group">
-						<input class="form-control" type="password" name="password" placeholder="password" id="password" required>
+					<div class="column">
+						<div class="form-group">
+							<input class="form-control" type="text" name="address" placeholder="Address" id="address" required>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="date" name="date_created" placeholder="date_created" id="date_created" required>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="email" placeholder="Email" id="email" required>
+						</div>
+						<div class="form-group">
+							<select name="access" id="access" required>
+								<option value="" disabled selected>Access</option>
+								<option value="Male">Super Admin</option>
+							</select>
+						</div>
+						
+
+						<div class="form-group">
+							<input class="form-control" type="password" name="password" placeholder="Password" id="password" required>
+						</div>
+
+						<div class="form-group">
+							<input class="form-control" type="password" name="confirmpassword" placeholder="Confirm password" id="confirmpassword" required oninput="validatePasswords()">
+						</div>
+
+						</div>
 					</div>
+						<!-- Indication messages -->
+						<div id="passwordMatch"></div>
+						<div id="passwordNotMatch"></div>
+						<br>
 
 					<div class="form-group text-center">
 						<div class="col-auto pt-2">
@@ -254,18 +178,29 @@ $con = connection();
 	<!-- Custom JS -->
 	<script src="assets/js/app.js"></script>
 
-	<script>
-		// JavaScript functions to show and hide the modal
-		function openModal() {
-			document.getElementById('forgotPasswordModal').style.display = 'flex';
-		}
 
-		function closeModal() {
-			document.getElementById('forgotPasswordModal').style.display = 'none';
-			// Clear the input field when the modal is closed
-			document.getElementById('email').value = '';
-		}
+
+	<script>
+        function validatePasswords() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmpassword").value;
+
+            var passwordMatch = document.getElementById("passwordMatch");
+            var passwordNotMatch = document.getElementById("passwordNotMatch");
+
+            if (password === confirmPassword) {
+                passwordMatch.innerHTML = "Password match";
+                passwordNotMatch.innerHTML = "";
+                return true; // Allow form submission
+            } else {
+                passwordMatch.innerHTML = "";
+                passwordNotMatch.innerHTML = "Passwords do not match";
+                return false; // Prevent form submission
+            }
+        }
 	</script>
+
+
 </body>
 
 </html>
