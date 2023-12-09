@@ -15,22 +15,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
     $pw = $_POST['password'];
 
-    // Fetch user data from the database based on ID
-    $sqlFetch = "SELECT * FROM admin_users WHERE admin_id = '$id'";
-    $resultFetch = $conn->pg_query($sqlFetch);
+    // Use prepared statement to fetch user data from the database based on ID
+    $sqlFetch = "SELECT * FROM admin_users WHERE admin_id = $1";
+    $resultFetch = pg_query_params($conn, $sqlFetch, array($id));
 
-    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id"; // Assuming the admin user has ID 1 / i remove the sa_id = 1 at the last
-    $resultFetchAdminPw = $conn->pg_query($sqlFetchAdminPw);
+    // Use prepared statement to fetch super admin password
+    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = $1";
+    $resultFetchAdminPw = pg_query_params($conn, $sqlFetchAdminPw, array(1)); // Assuming sa_id = 1
 
-    if ($resultFetch->num_rows > 0 && $resultFetchAdminPw->num_rows > 0) {
-        $row = $resultFetch->pg_fetch_assoc();
-        $adminPwRow = $resultFetchAdminPw->pg_fetch_assoc();
+    if ($resultFetch && $resultFetchAdminPw) {
+        $row = pg_fetch_assoc($resultFetch);
+        $adminPwRow = pg_fetch_assoc($resultFetchAdminPw);
 
         // Check if the entered password matches the stored password (without hashing)
         if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
-            $sqlDelete = "DELETE FROM admin_users WHERE admin_id = '$id'";
-            if ($conn->pg_query($sqlDelete) === TRUE) {
+            $sqlDelete = "DELETE FROM admin_users WHERE admin_id = $1";
+            $resultDelete = pg_query_params($conn, $sqlDelete, array($id));
+
+            if ($resultDelete) {
                 // Deletion successful
                 echo '<script>
                     setTimeout(function(){
@@ -73,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     }
 }
 
-// $sql = "SELECT * FROM admin_users";
-// $resultFetch = $conn->pg_query($sql);
+$sql = "SELECT * FROM admin_users";
+$resultFetch = pg_query($conn, $sql);
 ?>
 
 
@@ -171,10 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
             border-radius: 5px;
             padding: 8px 2rem;
         }
-       #action-btn{
-        padding: 5px 10px 5px 10px;
-       }
-        
+
+        #action-btn {
+            padding: 5px 10px 5px 10px;
+        }
     </style>
 </head>
 
@@ -239,10 +242,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if ($resultFetch->num_rows > 0) {
+                                        if (pg_num_rows($resultFetch) > 0) {
                                             $rowNumber = 1; // Initialize the row number
 
-                                            while ($row = $resultFetch->fetch_assoc()) {
+                                            while ($row = pg_fetch_assoc($resultFetch)) {
                                         ?>
                                                 <tr>
                                                     <td><?php echo $rowNumber; ?></td>
@@ -252,8 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['contact']; ?></td>
                                                     <td>
-                                                        <a href="details.php?ID=<?php echo $row['admin_id'] ?>" title="View"  id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
-                                                        <a href="edit_admin.php?ID=<?php echo $row['admin_id'] ?>" title="Edit"  id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
+                                                        <a href="details.php?ID=<?php echo $row['admin_id'] ?>" title="View" id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
+                                                        <a href="edit_admin.php?ID=<?php echo $row['admin_id'] ?>" title="Edit" id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>
 
                                                         <!-- Delete button with a password confirmation -->
                                                         <button type="button" id="action-btn" class="btn text-xs text-white btn-danger action-icon" data-toggle="modal" data-target="#confirmDelete<?php echo $row['admin_id']; ?>"><i class="fa fa-trash-o"></i></button>
@@ -283,7 +286,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                         <?php
@@ -292,8 +294,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
                                             }
                                         }
                                         ?>
-
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
