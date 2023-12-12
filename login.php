@@ -61,7 +61,7 @@
         // Clear the session error variable
         unset($_SESSION['notregistered']);
 
-        // Display the error for not registered email 
+        // Display the error for not registered emails
         echo "<script>
             Swal.fire(
                 'Error!',
