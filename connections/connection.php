@@ -20,7 +20,7 @@
 function connection()
 {
     $host = "user=postgres password=[sbit4e-4thyear-capstone-2023] host=db.tcfwwoixwmnbwfnzchbn.supabase.co port=5432 dbname=postgres";
-    $port = 5432;
+    $port = 6543;
     $username = "postgres";
     $password = "sbit4e-4thyear-capstone-2023";
     $database = "postgres";

@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 
-if (!isset($_SESSION['UserLogin'])) {
+if (!isset($_SESSION['admin_name'])) {
     header("location: login.php");
     exit();
 }

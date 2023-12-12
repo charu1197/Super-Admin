@@ -14,28 +14,25 @@ if (isset($_POST['signup'])) {
     $gender = $_POST['gender'];
     $age = $_POST['age'];
     $address = $_POST['address'];
-	$access = $_POST['access'];
+    $access = $_POST['access'];
     $email = $_POST['email'];
-	$contact = $_POST['contact'];
-	$date_created = date('Y-m-d');
-	$password = $_POST['password'];
-    // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-	
+    $contact = $_POST['contact'];
+    $date_created = date('Y-m-d');
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     $sql = "INSERT INTO super_admin_users (firstname, lastname, middlename, gender, age, address, access, email, contact, date_created, password)
         VALUES ('$firstname', '$lastname', '$middlename', '$gender', '$age', '$address', '$access', '$email', '$contact', '$date_created', '$password')";
 
-
     $result = pg_query($con, $sql) or die(pg_last_error($con));
 
-	if ($result) {
+    if ($result) {
         echo '<div class="alert alert-success" role="alert">Signup successful!</div>';
     } else {
         echo '<div class="alert alert-danger" role="alert">Error during signup. Please try again.</div>';
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
