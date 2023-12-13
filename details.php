@@ -2,32 +2,24 @@
 
 session_start();
 
-if (!isset($_SESSION['UserLogin'])) {
+if (!isset($_SESSION['admin_name'])) {
     header("location: login.php");
     exit();
-  }
-
-if(isset($_SESSION['Access']) && $_SESSION['Access'] == "super_admin"){
-    
-}else{
-    echo header("location: index.php");
 }
 
 include_once("connections/connection.php");
-//include_once('uth.php');
 
 $con = connection();
 
 $id = $_GET['ID'];
 
+$sql = "SELECT * FROM admin_users WHERE admin_id = $1";
+$result = pg_query_params($con, $sql, array($id)) or die(pg_last_error($con));
 
-
-
-$sql = "SELECT * FROM user_list WHERE id = '$id'";
-$students = $con->query($sql) or die ($con->error);
-$row = $students->fetch_assoc();
+$row = pg_fetch_assoc($result);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,318 +33,35 @@ $row = $students->fetch_assoc();
     <title>PCC HRMS</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/details">
+    <link rel="stylesheet" href="css/details2.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        .id-card-container{
-            
-            display: inline-block;
-        }
-        .page-wrapper{
-  padding: 1.5em;
+      #backFoot h5{
+font-size: 8px;
+margin-left: 2em;
 }
-        .id-card {
-      height: 600px ;
-      width: 360px;
-      background-color: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      position: relative; 
-      margin-right: 20px;
-      margin-bottom: 1em;
-      
-    }
+.logoBack img{
+height: 55px;
+width: 55px;
+margin-right:-7em;
+margin-top: -2.2em;
+margin-left: -8em;
 
-    .header11 {
-      background-color: #D9DD2D;
-      color: #806767;
-      text-align: left;
-      border-bottom-left-radius: 50%;
-      border-bottom-right-radius: 50%;
-      padding: 20px 0;
-      
-      height: 320px;
-      padding-top: 1em;
-      display: flex;
-      align-items: left;
-      justify-content: center;
-      text-align: center;
-    }
-    .header11 img{
-        height: 50px;
-      width: 50px;
-      margin-right:15px;
-
-    }
-    .header11 h2{
-        font-size:35px;
-        font-weight: bold;
-        color:#806767;
-    }
-    .header11 h4{
-        margin-top: -10px;
-        font-size: 20px;
-        margin-left: -.9em;
-    }
-
-    .profile-picture {
-      text-align: center;
-      padding: 20px;
-      margin-top: -26em;
-      margin-bottom: 7em;
-    }
-
-    .profile-picture img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: solid 3px green;
-      object-fit: cover;
-      margin-top: 11.5em;
-    }
-
-    .details {
-      text-align: center;
-      padding: 10px 50px;
-    }
-    .details p{
-        font-weight: bold;
-        font-size:40px;
-        margin-top: -1.5em;
-        letter-spacing:-2px;
-    }
-
-    .id-number {
-        position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  background-color: #806666;
-  width: 60%;
-  border-radius: 11px;
-  color: #fff;
-  padding: 10px ;
-  margin-bottom: 30px;
-      
-    }
-    .id-number p{
-        font-size: 18px;
-    }
-    
-    .sign{
-        align-items: center;
-      justify-content: center;
-      text-align: center;
-      
-    }
-    .sign{
-        padding:30px;
-        width: 70%;
-        border: 1px solid black;
-        background-color:#F9F9F9;
-        border-radius: 8px;
-    }
-
-    .sign p{
-        font-size: 18px;
-        margin-top: 1em;
-    }
-    .backID{
-        margin-left: 3.6em;
-        
-      margin-right: 30px;
-        margin-top: 3em;
-        font-size: 18px;
-        margin-bottom: 5em;
-    }
-
-    .logoBack {
-      background-color: #D9DD2D;
-      color: #806767;
-      text-align: left;
-      margin-top:5em;
-      padding: 20px 0;
-      height: 200px;
-      padding-top: 4em;
-      display: flex;
-      align-items: left;
-      justify-content: center;
-      text-align: center;
-    }
-    
-    .logoBack img{
-        height: 60px;
-      width: 60px;
-      margin-right:-7em;
-      margin-top: -2.2em;
-      margin-left: -10em;
-
-    }
-    
-    .logoBack h4{
-        margin-top: -10px;
-        font-size: 10px;
-        margin-left: -2.5em;
-    }
-    #backFoot{
-        align-items: left;
-      justify-content: left;
-      text-align: left;
-      margin-top: -2em;
-      margin-left: 1em;
-    }
-    #backFoot h5{
-      font-size: 12px;
-    }
-
-    
-    .user-details img{
-      height :120px;
-      width :120px;
-      border-radius: 50%;
-      border: solid 2px green;
-      object-fit: cover;
-      margin-bottom: 4em;
-      margin-right: 5em;
-      
-    }
-
-    #ap{
-      margin-bottom: 1em;
-    }
-
-    .back-btn{
-      margin-top: -3.8em;
-    }
-    .details-container {
-            width:1100px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 40 80px;
-            border-radius: 8px;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.id-card{
+  border: 1px solid #e8e8e8;
+}
+.print-button{
+    display: none;
+}
+         @media print {
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
-        
-
-        .details-container h2 {
-            text-align: left;
-            color: #333;
-        }
-
-        .details-container .user-details {
-            margin-top: 20px;
-        }
-
-        .details-container h4 {
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .details-container .profile-picture {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: block;
-            border: 5px solid #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .print-button {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .print-button:hover {
-            background-color: #2980b9;
-        }
-        #phname{
-          display: flex;
-        }
-        #phname img{
-          transform: scaleX(-1) ;
-    object-fit: cover;
-        }
-        
-        
-         #PI {
-            font-size: 1.5em;
-            margin-bottom: 2em;
-        }
-
-        .details-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        h4 {
-            margin: 0;
-            color: #555;
-        }
-
-        .print-button {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .print-button:hover {
-            background-color: #2980b9;
-        }
-        .c{
-          display: block;
-        }
-        #FL{
-          font-size: 30px;
-        }
-        .details-info h4{
-          background-color: #f0f0f0;
-          border-radius: 8px;
-          width: 100%;
-          padding: 10px;
-        }
-        .user-details{
-          padding: 3.5em;
-        }
-
-
-        @media print {
-        
-        }
-        #ap{
-          padding: 30px;
-          padding-left: 46px;
-          margin-bottom: -1em;
-          border-bottom: 1px solid #e3e3e3;
-        }
-        .print-button{
-          margin-bottom: 3em;
-          margin-top: -2em;
-        }
-        #pid{
-          padding-left: 4em;
-          padding-right: 4em;
-        }
-      .id-card-container, .id-card{
-        display: inline-block;
-      }
-        
+        /* Add any additional print styles here */
+    }
     </style>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
@@ -537,9 +246,10 @@ $row = $students->fetch_assoc();
             <img src="img/doh.png" alt="">
         </div>
         <div id="backFoot">
-            <h5>company telephone number </h5>
-            <h5>company address</h5>
-            <h5>sampleemail.com</h5>
+            <h5>(02) 8995 3846</h5>
+            <h5>6512 Quezon Avenue, Lung Center of the Philippines Compound <br>
+            Diliman, Quezon City, 1101</h5>
+            <h5>pccmo@doh.gov.ph</h5>
 
         </div>
         
@@ -547,7 +257,7 @@ $row = $students->fetch_assoc();
   
   
     </div>
-    <div class="modal-footer">
+           <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="printIDCard()">Print</button>
             </div>
@@ -590,25 +300,46 @@ $row = $students->fetch_assoc();
     <!-- Custom JS -->
     <script src="assets/js/app.js"></script>
 
-    <script>
+   <!-- Add this script block after your existing script block -->
+
+<script>
     function openIDCardModal() {
-        var idCardContent = document.getElementById("id-card-print").innerHTML;
-        document.getElementById("idCardPreview").innerHTML = idCardContent;
+        // Clone the modal content and append it to the preview area
+        var idCardContent = document.getElementById("id-card-print").cloneNode(true);
+        document.getElementById("idCardPreview").innerHTML = "";
+        document.getElementById("idCardPreview").appendChild(idCardContent);
+        // Show the modal
         $('#idCardModal').modal('show');
     }
 
     function printIDCard() {
+        // Get the original content of the body
         var originalContent = document.body.innerHTML;
+        // Get the content of the modal preview
         var idCardContent = document.getElementById("idCardPreview").innerHTML;
 
+        // Set the body content to the modal preview content
         document.body.innerHTML = idCardContent;
 
+        // Print the ID card
         window.print();
 
+        // Reset the body content to the original content
         document.body.innerHTML = originalContent;
+
+        // Hide the modal
         $('#idCardModal').modal('hide');
+        
+        // Clear the modal preview content
+        document.getElementById("idCardPreview").innerHTML = "";
     }
+
+    // Add an event listener to reset the modal content when it is closed
+    $('#idCardModal').on('hidden.bs.modal', function () {
+        document.getElementById("idCardPreview").innerHTML = "";
+    });
 </script>
+
 
   
 

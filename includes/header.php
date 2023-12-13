@@ -201,7 +201,7 @@
                     <span class="user-text">Super Admin</span>
                 </a>
                 <div class="dropdown-menu">
-                    <!-- <a class="dropdown-item" href="profile.php">My Profile</a> -->
+                    <a class="dropdown-item" href="profile.php">My Profile</a>
                     <!-- <a class="dropdown-item" href="settings.php">Settings</a> -->
                     <a class="dropdown-item" href="logout.php" onclick="confirmLogout(event)">Logout</a>
                 </div>

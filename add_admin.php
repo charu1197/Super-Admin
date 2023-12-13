@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['UserLogin'])) {
+if (!isset($_SESSION['admin_name'])) {
     header("location: login.php");
     exit();
 }
@@ -23,49 +23,64 @@ if (isset($_POST['submit'])) {
     $contact = $_POST['contact'];
     $address = $_POST['address'];
     $department = $_POST['department'];
-    $empID = $_POST['empID'];
-    $date = $_POST['date'];
-    $password = $_POST['password'];
-    //if (isset($_POST['image'])) {
+
+    $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+
+    $password = substr($fname, 0, 3) . substr($lname, -3) . substr($empID, -4);
+
+    $date = date("Y-m-d");
+
     $img = $_POST['image'];
-    //}
     $folderPath = "./uploads/";
 
     $image_parts = explode(";base64,", $img);
-    //echo $image_parts;
-
     $image_type_aux = explode("image/", $image_parts[0]);
-    //echo $image_type_aux;
     $image_type = $image_type_aux[1];
     $image_base64 = base64_decode($image_parts[1]);
     $fileName = uniqid() . '.jpeg';
     $file = $folderPath . $fileName;
 
     file_put_contents($file, $image_base64);
-    print_r($fileName);
 
-    $date = date("Y-m-d");
+    $check_sql = "SELECT * FROM admin_users WHERE firstname='$fname' AND lastname='$lname' AND email='$email'";
+    $result = pg_query($con, $check_sql);
 
-    $check_sql = "SELECT * FROM `user_list` WHERE `firstname`='$fname' AND `lastname`='$lname' AND `email`='$email'";
-    $result = $con->query($check_sql);
-
-    // $empID = rand(10000000, 99999999);
-
-    $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-
-    $password = substr($fname, 0, 3) . substr($lname, -3) . substr($empID, -4);
-
-    if ($result->num_rows > 0) {
-        echo '<script>alert("Error: A similar account already exists!")</script>';
+    if (pg_num_rows($result) > 0) {
+        echo '<script>
+                setTimeout(function(){
+                    Swal.fire({
+                        title: "Notice!",
+                        text: "Account already existed.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                }, 500);
+            </script>';
     } else {
-        $sql = "INSERT INTO `user_list`(`firstname`, `lastname`, `middlename`, `gender`, `age`, `email`, `contact`, `address`, `department`, `empID`, `added_at`, `password`, `photo`) VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
+        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, empID, date_created, password, photo) 
+        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
 
-        $con->query($sql) or die($con->error);
 
-        echo '<script>window.location.href = "index.php";</script>';
+        pg_query($con, $sql) or die(pg_last_error($con));
+
+        echo '<script>
+                setTimeout(function(){
+                    Swal.fire({
+                        title: "Registration Successful!",
+                        text: "Please proceed to HR department to complete your account registration.",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "manage_account.php";
+                        }
+                    });
+                }, 500);
+            </script>';
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -328,6 +343,25 @@ if (isset($_POST['submit'])) {
             return confirmation;
         }
     </script>
+    <!-- <script>
+    function confirmSubmission() {
+        Swal.fire({
+            title: "Confirmation",
+            text: "Are you sure that the information details are correct?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, submit",
+            cancelButtonText: "No, cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.forms[0].submit();
+            }
+        });
+        return false;
+    }
+    </script> -->
+
+
 </head>
 
 <body>
@@ -472,7 +506,7 @@ if (isset($_POST['submit'])) {
 
                                     <h3 id="info-txt">Account Information</h3>
 
-                                    <label>Auto Email</label>
+                                    <label>Email</label>
                                     <input type="text" name="auto-email" value=" " id="auto-email" readonly>
 
                                     <label>Auto Generated Password</label>
@@ -523,6 +557,7 @@ if (isset($_POST['submit'])) {
                                             <br />
 
                                             <button class="btn btn-success" onclick=closePhotoCaptureModal()>Save</button>
+                                            <!-- <input type="submit" value="save" onclick=closePhotoCaptureModal()> -->
 
                                         </div>
 
@@ -541,6 +576,7 @@ if (isset($_POST['submit'])) {
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

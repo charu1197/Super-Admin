@@ -1,30 +1,34 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['UserLogin'])) {
-    header("location: login.php");
-    exit();
-}
-
 include_once("connections/connection.php");
 
 $con = connection();
 
-$sql = "SELECT COUNT(*) as totalAdmins FROM user_list WHERE department IN ('HR', 'INVENTORY', 'REPOSITORY')";
-$result = $con->query($sql) or die($con->error);
-$row = $result->fetch_assoc();
-$totalAdmins = $row['totalAdmins'];
+// Queries for Total Users in Metrics
+$sql = "SELECT 
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'HR') as total_hr,
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'Repository') as total_repository,
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'Inventory') as total_inventory";
 
+$result = pg_query($con, $sql);
+$row = pg_fetch_assoc($result);
+
+$totalHR = $row['total_hr'];
+$totalRepository = $row['total_repository'];
+$totalInventory = $row['total_inventory'];
+
+// Total Activities
 $today = date('Y-m-d'); // Get the current date
-$sqlActivity = "SELECT COUNT(*) as totalActivities FROM activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
-$resultActivity = $con->query($sqlActivity) or die($con->error);
-$rowActivity = $resultActivity->fetch_assoc();
-$totalActivities = $rowActivity['totalActivities'];
+$sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
+$resultActivity = pg_query($con, $sqlActivity) or die("SQL Error: " . pg_last_error($con));
+$rowActivity = pg_fetch_assoc($resultActivity);
+$totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
 
-$sql = "SELECT * FROM user_list ORDER BY id DESC";
-$students = $con->query($sql) or die($con->error);
-$row = $students->fetch_assoc();
+$sql = "SELECT * FROM admin_users ORDER BY admin_id DESC";
+$students = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
+$row = pg_fetch_assoc($students);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -201,9 +205,59 @@ $row = $students->fetch_assoc();
         <div class="page-wrapper">
             <div class="content container-fluid">
 
-                <!-- ATTENDANCE TABLE -->
+                <!-- METRICS -->
                 <div class="row">
-                    <div class="col-md-7 col-sm-7 col-lg-7 col-xl-7">
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalHR; ?></h3>
+                                    <span>Total HR<br>Users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalInventory; ?></h3>
+                                    <span>Total Inventory<br>Users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalRepository; ?></h3>
+                                    <span>Total Repository<br>Users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalActivities; ?></h3>
+                                    <span>Today's Activity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="container">
                             <h2 class="mt-3 mb-4">Today's Attendance</h2>
 
@@ -248,46 +302,16 @@ $row = $students->fetch_assoc();
                         </div>
                     </div>
 
-                    <!-- METRICS -->
-                    <div class="col-md-5 col-sm-5 col-lg-5 col-xl-5">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                                <div class="card dash-widget card-height">
-                                    <div class="card-body card-align">
-                                        <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                        <div class="dash-widget-info">
-                                            <h3><?php echo $totalAdmins; ?></h3>
-                                            <span>Total Admins</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                                <div class="card dash-widget card-height">
-                                    <div class="card-body card-align">
-                                        <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                                        <div class="dash-widget-info">
-                                            <h3><?php echo $totalActivities; ?></h3>
-                                            <span>Today's Activity</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <!-- ABSENCE RATE CHART -->
             <div class="row">
-                <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+                <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                     <div class="container mt-2">
                         <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                            <div id="chartContainer" style="width: 100%; height: 500px;">
-                                <canvas id="absenceChart"></canvas>
+                            <div id="chartContainer" style="width: 100%; height: 530px;">
+                                <center><canvas id="absenceChart"></canvas></center>
                             </div>
                         </div>
                     </div>
@@ -328,8 +352,6 @@ $row = $students->fetch_assoc();
         </div>
     </div>
 
-
-    <!-- BAR CHART -->
 
     <!-- SWEET ALERT 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
