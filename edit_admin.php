@@ -7,6 +7,9 @@ if (!isset($_SESSION['admin_name'])) {
   exit();
 }
 
+
+// $empID = $_POST['empID'];
+
 include_once("connections/connection.php");
 $con = connection();
 $id = $_GET['ID'];
@@ -26,11 +29,24 @@ if (isset($_POST['submit'])) {
   $contact = $_POST['contact'];
   $address = $_POST['address'];
   $department = $_POST['department'];
-  // $empID = $_POST['empID'];
   $date = $_POST['date'];
   $password = $_POST['password'];
 
-  $sql = "UPDATE admin_users SET firstname = '$fname', lastname = '$lname', middlename = '$mname', age = '$age', email = '$email', contact = '$contact', address = '$address', department = '$department', added_at = '$date', password = '$password' WHERE admin_id = '$id'";
+  $sql = "UPDATE admin_users 
+    SET 
+      firstname = '$fname', 
+      lastname = '$lname', 
+      middlename = '$mname', 
+      age = '$age', 
+      email = '$email', 
+      contact = '$contact', 
+      address = '$address', 
+      department = '$department', 
+      added_at = '$date', 
+      date_updated = CURRENT_TIMESTAMP(0) AT TIME ZONE 'Asia/Manila', 
+      password = '$password'
+    WHERE admin_id = '$id'";
+
   $result = pg_query($con, $sql) or die(pg_last_error($con));
 
   if ($result) {
