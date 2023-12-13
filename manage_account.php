@@ -10,7 +10,6 @@ if (!isset($_SESSION['admin_name'])) {
 include_once("connections/connection.php");
 $conn = connection();
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
     $pw = $_POST['password'];
@@ -76,8 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     }
 }
 
-$sql = "SELECT * FROM admin_users";
+$sql = "SELECT * FROM admin_users ORDER BY date_updated DESC NULLS LAST";
 $resultFetch = pg_query($conn, $sql);
+
+
 ?>
 
 
@@ -205,7 +206,7 @@ $resultFetch = pg_query($conn, $sql);
                         <div class="col-md-3">
                             <div class="search-container">
                                 <i class="fa fa-search"></i>
-                                <input type="text" class="form-control pl-5 search-input" placeholder="Search">
+                                <input type="text" class="form-control pl-5 search-input" placeholder="Search" name="search">
                             </div>
                         </div>
 
@@ -237,13 +238,14 @@ $resultFetch = pg_query($conn, $sql);
                                             <th>Department</th>
                                             <th>Email</th>
                                             <th>Phone Number</th>
+                                            <th>Date Updated</th>
                                             <th class="no-sort">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         if (pg_num_rows($resultFetch) > 0) {
-                                            $rowNumber = 1; // Initialize the row number
+                                            $rowNumber = 1;
 
                                             while ($row = pg_fetch_assoc($resultFetch)) {
                                         ?>
@@ -254,6 +256,15 @@ $resultFetch = pg_query($conn, $sql);
                                                     <td><?php echo $row['department']; ?></td>
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['contact']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($row['date_updated'] !== null) {
+                                                            echo date('Y-m-d h:i A', strtotime($row['date_updated']));
+                                                        } else {
+                                                            echo '';
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td>
                                                         <a href="details.php?ID=<?php echo $row['admin_id'] ?>" title="View" id="action-btn" class="btn text-xs text-white btn-secondary action-icon"><i class="fa fa-eye"></i></a>
                                                         <a href="edit_admin.php?ID=<?php echo $row['admin_id'] ?>" title="Edit" id="action-btn" class="btn text-xs text-white btn-blue action-icon"><i class="fa fa-pencil"></i></a>

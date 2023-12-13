@@ -7,13 +7,16 @@ if (!isset($_SESSION['admin_name'])) {
   exit();
 }
 
+
+// $empID = $_POST['empID'];
+
 include_once("connections/connection.php");
 $con = connection();
 $id = $_GET['ID'];
 
-$sql = "SELECT * FROM admin_users WHERE id = '$id'";
-$students = $con->query($sql) or die($con->error);
-$row = $students->fetch_assoc();
+$sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
+$results = pg_query($con, $sql);
+$row = pg_fetch_assoc($results);
 
 if (isset($_POST['submit'])) {
 
@@ -26,29 +29,44 @@ if (isset($_POST['submit'])) {
   $contact = $_POST['contact'];
   $address = $_POST['address'];
   $department = $_POST['department'];
-  $empID = $_POST['empID'];
   $date = $_POST['date'];
   $password = $_POST['password'];
 
-  $sql = "UPDATE admin_users SET firstname = '$fname', lastname = '$lname', middlename = '$mname', age = '$age', email = '$email', contact = '$contact', address = '$address', department = '$department', empID = '$empID', added_at = '$date', password = '$password' WHERE id = '$id'";
+  $sql = "UPDATE admin_users 
+    SET 
+      firstname = '$fname', 
+      lastname = '$lname', 
+      middlename = '$mname', 
+      age = '$age', 
+      email = '$email', 
+      contact = '$contact', 
+      address = '$address', 
+      department = '$department', 
+      added_at = '$date', 
+      date_updated = CURRENT_TIMESTAMP(0) AT TIME ZONE 'Asia/Manila', 
+      password = '$password'
+    WHERE admin_id = '$id'";
 
-  $con->query($sql) or die($con->error);
+  $result = pg_query($con, $sql) or die(pg_last_error($con));
 
-  // echo header("location: details.php?ID=" . $id);
-  echo '<script>
-    setTimeout(function(){
-        Swal.fire({
-            title: "Success!",
-            text: "Admin Update successfully",
-            icon: "success",
-            confirmButtonText: "OK"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "details.php?ID=' . $id . '";
-            }
-        });
-    }, 500);
-</script>';
+  if ($result) {
+    echo '<script>
+        setTimeout(function(){
+            Swal.fire({
+                title: "Success!",
+                text: "Admin Update successfully",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "manage_account.php";
+                }
+            });
+        }, 500);
+    </script>';
+  } else {
+    echo "Update failed";
+  }
 }
 
 ?>
@@ -57,9 +75,14 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta name="description" content="This is a Philippine Cancer Center HR Management System">
+  <meta name="keywords" content="PCC-HRMS, HRMS, Human Resource, Capstone, System, HR">
+  <meta name="author" content="Heionim">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PCC HRMS</title>
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/edit.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -137,24 +160,20 @@ if (isset($_POST['submit'])) {
 
     <!-- Header -->
     <?php include_once("includes/header.php"); ?>
-
     <!-- Sidebar -->
     <?php include_once("includes/sidebar.php"); ?>
+
     <div class="page-wrapper">
       <div class="content container-fluid">
         <div class="cont">
 
-          <!-- <div class="back-btn">
-    <a href="index.php" class="button-link2">
-    <button class="custom-button2">&larr; Back</button>
-     </a>
-    </div> -->
           <h2 id="info-txt">Edit Admin</h2>
           <hr>
 
           <div class="container">
             <form action="" class="minimal-form" method="post" onsubmit="return confirmSubmission();">
               <div class="row">
+
                 <!-- Left Column -->
                 <div class="col-md-6">
                   <br><br><br>
@@ -170,8 +189,6 @@ if (isset($_POST['submit'])) {
                   <label>Middle name</label>
                   <input type="text" name="middlename" id="middlename" value="<?php echo $row['middlename']; ?>">
 
-                  <!-- <label>Year</label>
-        <input type="number" id="year" name="year" min="1900" max="2100"> -->
                   <label>Gender</label>
                   <select name="gender" id="gender">
                     <option value="Male" <?php echo ($row['gender'] == 'Male') ? 'selected' : ''; ?>>Male</option>
@@ -218,10 +235,7 @@ if (isset($_POST['submit'])) {
 
                   <label>From Auto Date Created</label>
                   <input type="date" name="date" id="date" readonly value="<?php echo date('Y-m-d', strtotime($row['added_at'])); ?>">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  <br><br><br> <br>
 
                   <h3 id="info-txt">Account Information</h3>
 
@@ -232,15 +246,12 @@ if (isset($_POST['submit'])) {
                   <input type="text" name="password" placeholder="you don't have to type here... " id="password" value="<?php echo $row['password']; ?>">
                 </div>
 
-                <!-- New Row for Gender -->
-
               </div>
 
               <!-- Centered Submit Button -->
               <div class="col-md-12 text-center">
-
-
                 <br>
+
                 <div class="submit-btn">
                   <input type="submit" name="submit" value="&#10004; Update" required>
                 </div>
@@ -249,12 +260,10 @@ if (isset($_POST['submit'])) {
           </div>
         </div>
 
-
       </div>
     </div>
 
   </div>
-
 
 
   <script src="assets/js/jquery-3.2.1.min.js"></script>
@@ -267,8 +276,6 @@ if (isset($_POST['submit'])) {
   <script src="assets/js/jquery.slimscroll.min.js"></script>
 
   <!-- Chart JS -->
-  <script src="assets/plugins/morris/morris.min.js"></script>
-  <script src="assets/plugins/raphael/raphael.min.js"></script>
   <script src="assets/js/chart.js"></script>
 
   <!-- Custom JS -->
@@ -280,7 +287,6 @@ if (isset($_POST['submit'])) {
       return confirmation;
     }
   </script>
-
 
 </body>
 
