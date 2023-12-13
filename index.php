@@ -4,26 +4,20 @@ include_once("connections/connection.php");
 
 $con = connection();
 
+// Queries for Total Users in Metrics
+$sql = "SELECT 
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'HR') as total_hr,
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'Repository') as total_repository,
+            (SELECT COUNT(*) FROM admin_users WHERE department = 'Inventory') as total_inventory";
 
-
-//total HR
-$sql = "SELECT COUNT(*) as totalHR FROM admin_users WHERE department IN ('HR')";
-$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
+$result = pg_query($con, $sql);
 $row = pg_fetch_assoc($result);
-$totalHR = isset($row['totalHR']) ? $row['totalHR'] : 0;
 
-//total Repo
-$sql = "SELECT COUNT(*) as totalRepo FROM admin_users WHERE department IN ('REPOSITORY')";
-$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
-$row = pg_fetch_assoc($result);
-$totalRepo = isset($row['totalRepo']) ? $row['totalRepo'] : 0;
+$totalHR = $row['total_hr'];
+$totalRepository = $row['total_repository'];
+$totalInventory = $row['total_inventory'];
 
-// total inventory
-$sql = "SELECT COUNT(*) as totalInventory FROM admin_users WHERE department IN ('INVENTORY')";
-$result = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
-$row = pg_fetch_assoc($result);
-$totalInventory = isset($row['totalInventory']) ? $row['totalInventory'] : 0;
-
+// Total Activities
 $today = date('Y-m-d'); // Get the current date
 $sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
 $resultActivity = pg_query($con, $sqlActivity) or die("SQL Error: " . pg_last_error($con));
@@ -219,19 +213,7 @@ $row = pg_fetch_assoc($students);
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
                                     <h3><?php echo $totalHR; ?></h3>
-                                    <span>Total HR</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
-                        <div class="card dash-widget card-height">
-                            <div class="card-body card-align">
-                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3><?php echo $totalRepo; ?></h3>
-                                    <span>Total Repo</span>
+                                    <span>Total HR<br>Users</span>
                                 </div>
                             </div>
                         </div>
@@ -243,12 +225,23 @@ $row = pg_fetch_assoc($students);
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
                                     <h3><?php echo $totalInventory; ?></h3>
-                                    <span>Total Inventory</span>
+                                    <span>Total Inventory<br>Users</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <div class="card dash-widget card-height">
+                            <div class="card-body card-align">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3><?php echo $totalRepository; ?></h3>
+                                    <span>Total Repository<br>Users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
@@ -359,8 +352,6 @@ $row = pg_fetch_assoc($students);
         </div>
     </div>
 
-
-    <!-- BAR CHART -->
 
     <!-- SWEET ALERT 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
