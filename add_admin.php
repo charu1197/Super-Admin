@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
                 }, 500);
             </script>';
     } else {
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, empID, added_at, password, photo) 
+        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, empID, date_created, password, photo) 
         VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
 
 
