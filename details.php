@@ -5,26 +5,21 @@ session_start();
 if (!isset($_SESSION['admin_name'])) {
     header("location: login.php");
     exit();
-  }
-
-if(isset($_SESSION['Access']) && $_SESSION['Access'] == "super_admin"){
-    
-}else{
-    echo header("location: index.php");
 }
 
 include_once("connections/connection.php");
-//include_once('uth.php');
 
 $con = connection();
 
 $id = $_GET['ID'];
 
-$sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
-$students = $con->query($sql) or die ($con->error);
-$row = $students->fetch_assoc();
+$sql = "SELECT * FROM admin_users WHERE admin_id = $1";
+$result = pg_query_params($con, $sql, array($id)) or die(pg_last_error($con));
+
+$row = pg_fetch_assoc($result);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
