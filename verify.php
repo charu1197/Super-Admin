@@ -1,5 +1,5 @@
 <?php
-    include "functions/auth-check.php";
+    include "functions/verify-check.php";
     ?>
     <!DOCTYPE html>
     <html lang="en">

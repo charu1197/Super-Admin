@@ -10,13 +10,51 @@
         <link rel="stylesheet" href="css/fortgot-pass.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script>
+
+                  <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
    
     </head>
 
     <body>
     <div class="left-side">
-                              <!-- Content for the authentication side goes here -->
-       
+                  <!-- Content for the authentication side goes here -->
+                  <?php
+                      session_start();
+
+                      // Check for error messages in the session
+                      if (isset($_SESSION['emptyfields'])) {
+                          $error = $_SESSION['emptyfields'];
+                          // Clear the session error variable
+                          unset($_SESSION['emptyfields']);
+
+                          // Display the error for empty fields
+                          echo "<script>
+                              Swal.fire({
+                                  icon: 'error',
+                                  title: 'Oops...',
+                                  text: '$error',
+                              });
+                          </script>";
+                      }
+
+                      // Check for error messages in the session
+                      if (isset($_SESSION['notregistered'])) {
+                          $error = $_SESSION['notregistered'];
+                          // Clear the session error variable
+                          unset($_SESSION['notregistered']);
+
+                          // Display the error for not registered emails
+                          echo "<script>
+                              Swal.fire(
+                                  'Error!',
+                                  '$error',
+                                  'error'
+                              );
+                          </script>";
+                      }
+
+                      ?>
                 <span class="align-1">Forgot Password</span>
         <div class="align-2">
                <!-- Content for the authentication side goes here -->
@@ -27,13 +65,13 @@
 
     <div class="col-md-6 side-image factor">
         <div class="input-box">
-                <form action="functions/verify-function.php" method="post" class="factor">
+                <form action="functions/forgotpass-function.php" method="post" class="factor">
                 <div class="form-group">
 						<i class="fas fa-envelope icon"></i>
 						<input class="form-control" name="email"  type="text" placeholder="Email">
 					</div>
                 
-                    <div class="card__form">
+          <div class="card__form">
             <button type="submit" class="sign-up">Reset password</button>
           </div>
             
