@@ -11,9 +11,9 @@ include_once("connections/connection.php");
 $con = connection();
 $id = $_GET['ID'];
 
-$sql = "SELECT * FROM admin_users WHERE id = '$id'";
-$students = $con->query($sql) or die($con->error);
-$row = $students->fetch_assoc();
+$sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
+$results = pg_query($con, $sql);
+$row = pg_fetch_assoc($results);
 
 if (isset($_POST['submit'])) {
 
@@ -31,10 +31,8 @@ if (isset($_POST['submit'])) {
   $password = $_POST['password'];
 
   $sql = "UPDATE admin_users SET firstname = '$fname', lastname = '$lname', middlename = '$mname', age = '$age', email = '$email', contact = '$contact', address = '$address', department = '$department', empID = '$empID', added_at = '$date', password = '$password' WHERE id = '$id'";
+  pg_query($con, $sql) or die(pg_last_error($con));
 
-  $con->query($sql) or die($con->error);
-
-  // echo header("location: details.php?ID=" . $id);
   echo '<script>
     setTimeout(function(){
         Swal.fire({
@@ -57,9 +55,14 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta name="description" content="This is a Philippine Cancer Center HR Management System">
+  <meta name="keywords" content="PCC-HRMS, HRMS, Human Resource, Capstone, System, HR">
+  <meta name="author" content="Heionim">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PCC HRMS</title>
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/edit.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -280,7 +283,6 @@ if (isset($_POST['submit'])) {
       return confirmation;
     }
   </script>
-
 
 </body>
 
