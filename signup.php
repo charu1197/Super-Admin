@@ -27,6 +27,9 @@ if (isset($_POST['signup'])) {
 
     if ($result) {
         echo '<div class="alert alert-success" role="alert">Signup successful!</div>';
+		header("location: login.php");
+		exit();
+
     } else {
         echo '<div class="alert alert-danger" role="alert">Error during signup. Please try again.</div>';
     }

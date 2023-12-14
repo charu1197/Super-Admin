@@ -1,5 +1,5 @@
 <?php
-    include "functions/auth-check.php";
+    include "functions/verify-check.php";
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@latest/dist/sweetalert2.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest"></script>
+            <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
    
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -31,7 +31,7 @@ body {
     font-size: 14px;
     font-weight: 100;
     margin-top: 4px;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
   }
   
   .form-control {
@@ -57,7 +57,7 @@ body {
 
 .icon {
     position: absolute;
-    padding-top: 19px;
+    padding-top: 50px;
     font-size: 20px;
     transform: translateY(-50%);
     color: #999;
@@ -66,7 +66,7 @@ body {
   
   .card__form button {
     margin-left: 14px;
-    margin-top: 45px;
+    margin-top: 35px;
     margin-bottom: 20px;
     border: 0;
     background: #001a09;
