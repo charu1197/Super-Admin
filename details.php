@@ -144,14 +144,14 @@ margin-left: -8em;
         </div>
         <div>
             <label for="">Employee ID:</label>
-            <h4><?php echo $row['empID']; ?></h4>
+            <h4><?php echo $row['emp_id']; ?></h4>
         </div>
     </div>
 
     <div class="right-col">
         <div>
             <label for="">Date Created:</label>
-            <h4><?php echo $row['added_at']; ?></h4>
+            <h4><?php echo $row['date_created']; ?></h4>
         </div>
         <div>
             <label for="">Password:</label>

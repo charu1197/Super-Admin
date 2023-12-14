@@ -251,7 +251,7 @@ $resultFetch = pg_query($conn, $sql);
                                         ?>
                                                 <tr>
                                                     <td><?php echo $rowNumber; ?></td>
-                                                    <td><?php echo $row['empID']; ?></td>
+                                                    <td><?php echo $row['emp_id']; ?></td>
                                                     <td><?php echo $row['firstname']; ?></td>
                                                     <td><?php echo $row['department']; ?></td>
                                                     <td><?php echo $row['email']; ?></td>
