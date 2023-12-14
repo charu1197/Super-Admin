@@ -238,6 +238,7 @@ $resultFetch = pg_query($conn, $sql);
                                             <th>Department</th>
                                             <th>Email</th>
                                             <th>Phone Number</th>
+                                            <th>Date Created</th>
                                             <th>Date Updated</th>
                                             <th class="no-sort">Action</th>
                                         </tr>
@@ -256,6 +257,15 @@ $resultFetch = pg_query($conn, $sql);
                                                     <td><?php echo $row['department']; ?></td>
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['contact']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($row['date_created'] !== null) {
+                                                            echo date('Y-m-d h:i A', strtotime($row['date_created']));
+                                                        } else {
+                                                            echo '';
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td>
                                                         <?php
                                                         if ($row['date_updated'] !== null) {

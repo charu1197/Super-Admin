@@ -230,11 +230,11 @@ if (isset($_POST['submit'])) {
                   </select>
 
                   <label>From Auto Generated Employee ID</label>
-                  <input type="text" name="empID" placeholder="you don't have to type here... " id="empID" value="<?php echo $row['empID']; ?>">
+                  <input type="text" name="empID" placeholder="you don't have to type here... " id="empID" value="<?php echo $row['emp_id']; ?>">
 
 
                   <label>From Auto Date Created</label>
-                  <input type="date" name="date" id="date" readonly value="<?php echo date('Y-m-d', strtotime($row['added_at'])); ?>">
+                  <input type="date" name="date" id="date" readonly value="<?php echo date('Y-m-d', strtotime($row['date_created'])); ?>">
                   <br><br><br> <br>
 
                   <h3 id="info-txt">Account Information</h3>
