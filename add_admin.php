@@ -320,6 +320,13 @@ if (isset($_POST['submit'])) {
         #firstname {
             margin-top: 9px;
         }
+        #sa-acc{
+            background-color: #f5f5f5;
+            padding: 20px 50px 20px 50px;
+            border-radius: 3em;
+            float: right;
+            margin-top: -4.8em;
+        }
     </style>
 
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -387,6 +394,7 @@ if (isset($_POST['submit'])) {
         </a>
     </div> -->
                     <h2 id="info-txt">Add new Admin</h2>
+                    <a id="sa-acc" href="signup.php">For Super Admin?</a>
                     <hr>
 
                     <div class="biom">
@@ -569,8 +577,6 @@ if (isset($_POST['submit'])) {
                     </div>
 
                 </div>
-
-
             </div>
         </div>
 

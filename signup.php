@@ -26,12 +26,12 @@ if (isset($_POST['signup'])) {
     $result = pg_query($con, $sql) or die(pg_last_error($con));
 
     if ($result) {
-        echo '<div class="alert alert-success" role="alert">Signup successful!</div>';
-		header("location: login.php");
+        echo '<div class="alert alert-success" role="alert">Create successfully!</div>';
+		header("location: manage_account.php");
 		exit();
 
     } else {
-        echo '<div class="alert alert-danger" role="alert">Error during signup. Please try again.</div>';
+        echo '<div class="alert alert-danger" role="alert">Error during creation. Please try again.</div>';
     }
 }
 ?>
@@ -67,6 +67,10 @@ if (isset($_POST['signup'])) {
 	<link rel="stylesheet" href="css/signup2.css">
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+	<!-- Lineawesome CSS -->
+    <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+
+   
 
 	<style>
 		#access{
@@ -87,16 +91,20 @@ if (isset($_POST['signup'])) {
 <body class="account-page">
 
 	<div class="main-wrapper">
+	<?php include_once("includes/header.php"); ?>
+        <?php include_once("includes/sidebar.php"); ?>
+		<div class="page-wrapper">
+            <div class="content container-fluid">
 		<!-- LEFT SIDE CONTAINER -->
-		<div class="left-side ">
+		<!-- <div class="left-side ">
 			<div class="account-logo">
 				<a href="index.php"><img src="img/signup-bg.png" alt="Company Logo"></a>
 			</div>
-		</div>
+		</div> -->
 		<!-- RIGHT SIDE CONTAINER -->
 		<div class="account-content">
 			<div class="account-wrapper">
-				<h3 class="login-header">Sign up</h3>
+				<h3 class="login-header">Create Super Admin</h3>
                 <br>
 
 				<form method="POST" enctype="multipart/form-data" onsubmit="return validatePasswords()">
@@ -163,12 +171,12 @@ if (isset($_POST['signup'])) {
 						
 
 					<div class="form-group text-center">
-						<div class="col-auto pt-2">
+						<!-- <div class="col-auto pt-2">
 							<a class="float-left forgot-password" id="link" href="Login.php">
 								Already an account?
 							</a>
-						</div>
-						<button class="btn btn-primary login-btn" name="signup" type="submit">Sign up</button>
+						</div> -->
+						<button class="btn btn-primary login-btn" name="signup" type="submit">Submit</button>
 					</div>
 				</form>
 
@@ -178,17 +186,33 @@ if (isset($_POST['signup'])) {
 			<a href="#"><span>Need Help?</span></a>
 		</div> -->
 	</div>
+	</div>
+	</div>
 
 
-	<!-- jQuery -->
-	<script src="assets/js/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
-	<!-- Bootstrap Core JS -->
-	<script src="assets/js/popper.min.js"></script>
-	<script src="assets/js/bootstrap.min.js"></script>
 
-	<!-- Custom JS -->
-	<script src="assets/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery-3.2.1.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/plugins/morris/morris.min.js"></script>
+    <script src="assets/plugins/raphael/raphael.min.js"></script>
+
+
+    <!-- Custom JS -->
+    <script src="assets/js/app.js"></script>
 
 
 
