@@ -85,6 +85,18 @@ if (isset($_POST['signup'])) {
 		button{
 			margin-top: -3em;
 		}
+		.leftt{
+			margin-left: -15em;
+		}
+		.cont {
+            padding: 2em;
+            padding-bottom: 3em;
+            border-radius: 10px;
+            background-color: white;
+            width: 1050px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            padding-top: 3em;
+        }
 	</style>
 </head>
 
@@ -95,6 +107,7 @@ if (isset($_POST['signup'])) {
         <?php include_once("includes/sidebar.php"); ?>
 		<div class="page-wrapper">
             <div class="content container-fluid">
+			<div class="cont">
 		<!-- LEFT SIDE CONTAINER -->
 		<!-- <div class="left-side ">
 			<div class="account-logo">
@@ -111,19 +124,24 @@ if (isset($_POST['signup'])) {
 				
 				<div class="row">
 					<div class="column">
+						<div class="leftt">
 						<div class="form-group">
-							<input class="form-control" type="text" name="firstname" placeholder="Firstname" id="firstname" required>
+						<label>Firstname<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="firstname" id="firstname" required>
 						</div>
 
 						<div class="form-group">
-							<input class="form-control" type="text" name="lastname" placeholder="Lastname" id="lastname" required>
+						<label>Lastname<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="lastname" id="lastname" required>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" name="middlename" placeholder="Middlename" id="middlename" required>
+						<label>Middlename<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="middlename" id="middlename" required>
 						</div>
 						
 
 						<div class="form-group">
+						<label>Giender<span style="color: red;">*</span></label>
 						<select name="gender" id="gender" required>
 							<option value="" disabled selected>Select a gender</option>
 							<option id="options" value="Male">Male</option>
@@ -131,23 +149,28 @@ if (isset($_POST['signup'])) {
 						</select>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" name="age" placeholder="Age" id="age" required>
+						<label>Age<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="age" id="age" required>
 						</div>
-						
+						</div>
 					</div>
 
 					<div class="column">
+						<div class="rightt">
 					<div class="form-group">
-							<input class="form-control" type="text" name="contact" placeholder="contact" id="contact" required>
+					<label>Contact<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="contact" id="contact" required>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" name="address" placeholder="Address" id="address" required>
+						<label>Address<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="address" id="address" required>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="date" name="date_created" placeholder="date_created" id="date_created">
+							<input class="form-control" type="date" name="date_created" id="date_created">
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" name="email" placeholder="Email" id="email" required>
+						<label>Email<span style="color: red;">*</span></label>
+							<input class="form-control" type="text" name="email" id="email" required>
 						</div>
 						<div class="form-group">
 							<input class="form-control" type="text" name="access" Value="Super Admin" id="access" required>
@@ -155,11 +178,14 @@ if (isset($_POST['signup'])) {
 						
 
 						<div class="form-group">
-							<input class="form-control" type="password" name="password" placeholder="Password" id="password" required>
+						<label>Password<span style="color: red;">*</span></label>
+							<input class="form-control" type="password" name="password" id="password" required>
 						</div>
 
 						<div class="form-group">
-							<input class="form-control" type="password" name="confirmpassword" placeholder="Confirm password" id="confirmpassword" required oninput="validatePasswords()">
+						<label>Confirm Password<span style="color: red;">*</span></label>
+							<input class="form-control" type="password" name="confirmpassword" id="confirmpassword" required oninput="validatePasswords()">
+						</div>
 						</div>
 
 						</div>
@@ -179,7 +205,7 @@ if (isset($_POST['signup'])) {
 						<button class="btn btn-primary login-btn" name="signup" type="submit">Submit</button>
 					</div>
 				</form>
-
+				</div>
 			</div>
 		</div>
 		<!-- <div class="help-link">
