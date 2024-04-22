@@ -5,7 +5,7 @@ require_once "../connections/connection.php";
 
 // If user login button
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $connection = connection();
+    // $db_connection = pg_connect();
 
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     $query = 'SELECT * FROM super_admin_users WHERE email = $1';
-    $result = pg_query_params($connection, $query, array($email));
+    $result = pg_query_params($db_connection, $query, array($email));
 
     $user = pg_fetch_assoc($result);
 
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 exit();
             } else {
                 // Call the function to send the verification email
-                sendVerificationEmail($user, $connection);
+                sendVerificationEmail($user, $db_connection);
     
                 // Redirect to the verification page
                 header('location: ../verify.php');
@@ -57,6 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     // Close the connection
-    pg_close($connection);
+    pg_close($db_connection);
 }
 ?>

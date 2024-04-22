@@ -1,39 +1,6 @@
 <?php
 
-// function connection()
-// {
-//     $host = "localhost";
-//     $username = "root";
-//     $password = "";
-//     $database = "super_admin";
-
-//     $con = new mysqli($host, $username, $password, $database);
-
-   
-//     if ($con->connect_error) {
-//         die("Connection failed: " . $con->connect_error);
-//     } else {
-//         return $con;
-//     }
-// }
-
-function connection()
-{
-    $host = "user=postgres password=[sbit4e-4thyear-capstone-2023] host=db.tcfwwoixwmnbwfnzchbn.supabase.co port=5432 dbname=postgres";
-    $port = 6543;
-    $username = "postgres";
-    $password = "sbit4e-4thyear-capstone-2023";
-    $database = "postgres";
-
-    $con = pg_connect("host=$host port=$port dbname=$database user=$username password=$password");
-
-    // Check connection
-    if (!$con) {
-        die("Connection failed: " . pg_last_error());
-    } else {
-        return $con;
-    }
-}
+$host = "user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres";
+$db_connection = pg_connect($host);
 
 ?>
-

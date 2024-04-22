@@ -2,7 +2,7 @@
 session_start();
 include_once("connections/connection.php");
 
-$con = connection();
+$db_connection = pg_connect();
 
 // Queries for Total Users in Metrics
 $sql = "SELECT 
@@ -10,7 +10,7 @@ $sql = "SELECT
             (SELECT COUNT(*) FROM admin_users WHERE department = 'Repository') as total_repository,
             (SELECT COUNT(*) FROM admin_users WHERE department = 'Inventory') as total_inventory";
 
-$result = pg_query($con, $sql);
+$result = pg_query($db_connection, $sql);
 $row = pg_fetch_assoc($result);
 
 $totalHR = $row['total_hr'];
@@ -20,12 +20,12 @@ $totalInventory = $row['total_inventory'];
 // Total Activities
 $today = date('Y-m-d'); // Get the current date
 $sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
-$resultActivity = pg_query($con, $sqlActivity) or die("SQL Error: " . pg_last_error($con));
+$resultActivity = pg_query($db_connection, $sqlActivity) or die("SQL Error: " . pg_last_error($db_connection));
 $rowActivity = pg_fetch_assoc($resultActivity);
 $totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
 
 $sql = "SELECT * FROM admin_users ORDER BY admin_id DESC";
-$students = pg_query($con, $sql) or die("SQL Error: " . pg_last_error($con));
+$students = pg_query($db_connection, $sql) or die("SQL Error: " . pg_last_error($db_connection));
 $row = pg_fetch_assoc($students);
 ?>
 

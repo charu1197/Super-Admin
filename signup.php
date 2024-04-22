@@ -5,7 +5,7 @@ if (!isset($_SESSION)) {
 
 include_once("connections/connection.php");
 
-$con = connection();
+// $db_connection = pg_connect();
 
 if (isset($_POST['signup'])) {
     $firstname = $_POST['firstname'];
@@ -16,14 +16,15 @@ if (isset($_POST['signup'])) {
     $address = $_POST['address'];
     $access = $_POST['access'];
     $email = $_POST['email'];
-    $contact = $_POST['contact'];
+    $db_connectiontact = $_POST['contact'];
     $date_created = date('Y-m-d');
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+	// $password = $_POST['password'];
 
     $sql = "INSERT INTO super_admin_users (firstname, lastname, middlename, gender, age, address, access, email, contact, date_created, password)
-        VALUES ('$firstname', '$lastname', '$middlename', '$gender', '$age', '$address', '$access', '$email', '$contact', '$date_created', '$password')";
+        VALUES ('$firstname', '$lastname', '$middlename', '$gender', '$age', '$address', '$access', '$email', '$db_connectiontact', '$date_created', '$password')";
 
-    $result = pg_query($con, $sql) or die(pg_last_error($con));
+    $result = pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
 
     if ($result) {
         echo '<div class="alert alert-success" role="alert">Signup successful!</div>';
