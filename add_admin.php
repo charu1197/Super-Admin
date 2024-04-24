@@ -32,14 +32,14 @@ if (isset($_POST['submit'])) {
 
     $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
     $date = date("Y-m-d");
-    $img = $_POST['image'];
-    $folderPath = "./uploads/";
+    // $img = $_POST['image'];
+    // $folderPath = "./uploads/";
 
-    $image_parts = explode(";base64,", $img);
-    $image_base64 = base64_decode($image_parts[1]);
-    $fileName = uniqid() . '.jpeg';
-    $file = $folderPath . $fileName;
-    file_put_contents($file, $image_base64);
+    // $image_parts = explode(";base64,", $img);
+    // $image_base64 = base64_decode($image_parts[1]);
+    // $fileName = uniqid() . '.jpeg';
+    // $file = $folderPath . $fileName;
+    // file_put_contents($file, $image_base64);
 
     $check_sql = "SELECT * FROM admin_users WHERE email='$email'";
     $result = pg_query($db_connection, $check_sql);
@@ -47,8 +47,8 @@ if (isset($_POST['submit'])) {
     if (pg_num_rows($result) > 0) {
         echo '<script>alert("Account already existed.");</script>';
     } else {
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
-        $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password, $fileName);
+        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
+        $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password);
         if ($stmt = pg_prepare($db_connection, "", $sql)) {
             pg_execute($db_connection, "", $params);
             echo '<script>alert("Registration Successful!");</script>';
@@ -396,16 +396,16 @@ if (isset($_POST['submit'])) {
 
                             <!-- <form action="" class="minimal-form" method="post" onsubmit="confirmSubmission(event);"> -->
                             <br><br><br>
-                            <center>
+                            <!-- <center>
                                 <div class="cap-photo">
                                     <img src="" alt="" name="images" id="images">
                                 </div>
                                 <br>
                                 <div class="modal-camera">
-                                    <!-- Change the button type to "button" -->
+                                  
                                     <button type="button" id="photoCaptureButton">Take a Photo</button>
                                 </div>
-                            </center>
+                            </center> -->
                             <div class="row">
 
                                 <!-- Left Column -->
