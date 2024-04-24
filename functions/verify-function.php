@@ -3,7 +3,8 @@ session_start();
 require_once "../connections/connection.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verification_code'])) {
-    $connection = connection();
+    // $connection = pg_connect();
+    $db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
     // Retrieve the array of verification codes
     $enteredCodes = isset($_POST['verification_code']) ? $_POST['verification_code'] : [];

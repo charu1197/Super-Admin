@@ -2,7 +2,7 @@
 session_start();
 include_once("connections/connection.php");
 
-$db_connection = pg_connect();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
 // Queries for Total Users in Metrics
 $sql = "SELECT 
@@ -18,11 +18,11 @@ $totalRepository = $row['total_repository'];
 $totalInventory = $row['total_inventory'];
 
 // Total Activities
-$today = date('Y-m-d'); // Get the current date
-$sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
-$resultActivity = pg_query($db_connection, $sqlActivity) or die("SQL Error: " . pg_last_error($db_connection));
-$rowActivity = pg_fetch_assoc($resultActivity);
-$totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
+// $today = date('Y-m-d'); // Get the current date
+// $sqlActivity = "SELECT COUNT(*) as totalActivities FROM sa_activity_logs WHERE DATE(date_change) = '$today' AND status IN ('active', 'inactive')";
+// $resultActivity = pg_query($db_connection, $sqlActivity) or die("SQL Error: " . pg_last_error($db_connection));
+// $rowActivity = pg_fetch_assoc($resultActivity);
+// $totalActivities = isset($rowActivity['totalActivities']) ? $rowActivity['totalActivities'] : 0;
 
 $sql = "SELECT * FROM admin_users ORDER BY admin_id DESC";
 $students = pg_query($db_connection, $sql) or die("SQL Error: " . pg_last_error($db_connection));

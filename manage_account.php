@@ -8,7 +8,8 @@ if (!isset($_SESSION['admin_name'])) {
 }
 
 include_once("connections/connection.php");
-$conn = connection();
+// $db_connection = connection();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
@@ -16,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
 
     // Use prepared statement to fetch user data from the database based on ID
     $sqlFetch = "SELECT * FROM admin_users WHERE admin_id = $1";
-    $resultFetch = pg_query_params($conn, $sqlFetch, array($id));
+    $resultFetch = pg_query_params($db_connection, $sqlFetch, array($id));
 
     // Use prepared statement to fetch super admin password
     $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = $1";
-    $resultFetchAdminPw = pg_query_params($conn, $sqlFetchAdminPw, array(1)); // Assuming sa_id = 1
+    $resultFetchAdminPw = pg_query_params($db_connection, $sqlFetchAdminPw, array(1)); // Assuming sa_id = 1
 
     if ($resultFetch && $resultFetchAdminPw) {
         $row = pg_fetch_assoc($resultFetch);
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
         if ($pw === $adminPwRow['password']) {
             // Password is correct, proceed with deletion
             $sqlDelete = "DELETE FROM admin_users WHERE admin_id = $1";
-            $resultDelete = pg_query_params($conn, $sqlDelete, array($id));
+            $resultDelete = pg_query_params($db_connection, $sqlDelete, array($id));
 
             if ($resultDelete) {
                 // Deletion successful
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
 }
 
 $sql = "SELECT * FROM admin_users ORDER BY date_updated DESC NULLS LAST";
-$resultFetch = pg_query($conn, $sql);
+$resultFetch = pg_query($db_connection, $sql);
 
 
 ?>

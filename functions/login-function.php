@@ -6,6 +6,7 @@ require_once "../connections/connection.php";
 // If user login button
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // $db_connection = pg_connect();
+    $db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';

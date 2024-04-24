@@ -11,7 +11,8 @@ include_once("connections/connection.php");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$con = connection();
+// $db_connection = connection();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
 if (isset($_POST['submit'])) {
     $fname = $_POST['firstname'];
@@ -20,7 +21,7 @@ if (isset($_POST['submit'])) {
     $gender = $_POST['gender'];
     $age = $_POST['age'];
     $email = $_POST['email'];
-    $contact = $_POST['contact'];
+    $db_connectiontact = $_POST['contact'];
     $address = $_POST['address'];
     $department = $_POST['department'];
 
@@ -43,7 +44,7 @@ if (isset($_POST['submit'])) {
     file_put_contents($file, $image_base64);
 
     $check_sql = "SELECT * FROM admin_users WHERE firstname='$fname' AND lastname='$lname' AND email='$email'";
-    $result = pg_query($con, $check_sql);
+    $result = pg_query($db_connection, $check_sql);
 
     if (pg_num_rows($result) > 0) {
         echo '<script>
@@ -58,10 +59,10 @@ if (isset($_POST['submit'])) {
             </script>';
     } else {
         $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) 
-        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$contact', '$address', '$department', '$empID', '$date', '$password', '$img')";
+        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password', '$img')";
 
 
-        pg_query($con, $sql) or die(pg_last_error($con));
+        pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
 
         echo '<script>
                 setTimeout(function(){
