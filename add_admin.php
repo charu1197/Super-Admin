@@ -11,73 +11,50 @@ include_once("connections/connection.php");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// $db_connection = connection();
-$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
+$db_connection = pg_connect("host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023");
 
 if (isset($_POST['submit'])) {
-    $fname = $_POST['firstname'];
-    $lname = $_POST['lastname'];
-    $mname = $_POST['middlename'];
-    $gender = $_POST['gender'];
-    $age = $_POST['age'];
-    $email = $_POST['email'];
-    $db_connectiontact = $_POST['contact'];
-    $address = $_POST['address'];
-    $department = $_POST['department'];
+    // Check if password is provided
+    if (empty($_POST['password'])) {
+        die('Password is required.');
+    }
+
+    $fname = pg_escape_string($db_connection, $_POST['firstname']);
+    $lname = pg_escape_string($db_connection, $_POST['lastname']);
+    $mname = pg_escape_string($db_connection, $_POST['middlename']);
+    $gender = pg_escape_string($db_connection, $_POST['gender']);
+    $age = pg_escape_string($db_connection, $_POST['age']);
+    $email = pg_escape_string($db_connection, $_POST['email']);
+    $contact = pg_escape_string($db_connection, $_POST['contact']);
+    $address = pg_escape_string($db_connection, $_POST['address']);
+    $department = pg_escape_string($db_connection, $_POST['department']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);  // Hash the password
 
     $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-
-    $password = substr($fname, 0, 3) . substr($lname, -3) . substr($empID, -4);
-
     $date = date("Y-m-d");
-
     $img = $_POST['image'];
     $folderPath = "./uploads/";
 
     $image_parts = explode(";base64,", $img);
-    $image_type_aux = explode("image/", $image_parts[0]);
-    $image_type = $image_type_aux[1];
     $image_base64 = base64_decode($image_parts[1]);
     $fileName = uniqid() . '.jpeg';
     $file = $folderPath . $fileName;
-
     file_put_contents($file, $image_base64);
 
-    $check_sql = "SELECT * FROM admin_users WHERE firstname='$fname' AND lastname='$lname' AND email='$email'";
+    $check_sql = "SELECT * FROM admin_users WHERE email='$email'";
     $result = pg_query($db_connection, $check_sql);
 
     if (pg_num_rows($result) > 0) {
-        echo '<script>
-                setTimeout(function(){
-                    Swal.fire({
-                        title: "Notice!",
-                        text: "Account already existed.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
-                }, 500);
-            </script>';
+        echo '<script>alert("Account already existed.");</script>';
     } else {
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) 
-        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password', '$img')";
-
-
-        pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
-
-        echo '<script>
-                setTimeout(function(){
-                    Swal.fire({
-                        title: "Registration Successful!",
-                        text: "Please proceed to HR department to complete your account registration.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "manage_account.php";
-                        }
-                    });
-                }, 500);
-            </script>';
+        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+        $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password, $fileName);
+        if ($stmt = pg_prepare($db_connection, "", $sql)) {
+            pg_execute($db_connection, "", $params);
+            echo '<script>alert("Registration Successful!");</script>';
+        } else {
+            echo '<script>alert("Error in registration.");</script>';
+        }
     }
 }
 ?>
@@ -510,8 +487,8 @@ if (isset($_POST['submit'])) {
                                     <label>Email</label>
                                     <input type="text" name="auto-email" value=" " id="auto-email" readonly>
 
-                                    <label>Auto Generated Password</label>
-                                    <input type="text" name="password" placeholder="you don't have to type here... " id="password" readonly>
+                                    <label>Password</label>
+                                    <input type="text" name="password" placeholder="type your password..." required>
 
                                 </div>
 

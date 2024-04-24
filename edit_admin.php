@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_name'])) {
   exit();
 }
 
-
 // $empID = $_POST['empID'];
 
 include_once("connections/connection.php");

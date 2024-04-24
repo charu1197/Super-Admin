@@ -242,7 +242,7 @@ $row = pg_fetch_assoc($students);
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                                 <div class="dash-widget-info">
-                                    <h3><?php echo $totalActivities; ?></h3>
+                                    <!-- <h3><?php echo $totalActivities; ?></h3> -->
                                     <span>Today's Activity</span>
                                 </div>
                             </div>

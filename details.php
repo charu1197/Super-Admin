@@ -8,13 +8,13 @@ if (!isset($_SESSION['admin_name'])) {
 }
 
 include_once("connections/connection.php");
-
-$con = connection();
+// $db_connection = connection();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
 $id = $_GET['ID'];
 
 $sql = "SELECT * FROM admin_users WHERE admin_id = $1";
-$result = pg_query_params($con, $sql, array($id)) or die(pg_last_error($con));
+$result = pg_query_params($db_connection, $sql, array($id)) or die(pg_last_error($db_connection));
 
 $row = pg_fetch_assoc($result);
 
