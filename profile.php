@@ -9,17 +9,18 @@ if (!isset($_SESSION['admin_name'])) {
 
 include_once("connections/connection.php");
 
-$con = connection();
+// $db_connection = connection();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
 $id = $_GET['sa_id'];
 
 $sql = "SELECT * FROM super_admin_users WHERE sa_id = $1";
-$result = pg_query($con, $sql, array($id));
+$result = pg_query($db_connection, $sql, array($id));
 
 $row = pg_fetch_assoc($result);
 
 if (!$row) {
-    die("Error fetching data: " . pg_last_error($con));
+    die("Error fetching data: " . pg_last_error($db_connection));
 }
 
 ?>
