@@ -41,7 +41,7 @@
                 <li class="profile-block">
                     <a href="#">
                         <span class="user-img d-inline-block position-relative">
-                            <img src="img/doh.png" alt="User Picture" class="rounded-circle img-thumbnail neon-border">
+                            <img src="img/pcc-logo.png" alt="User Picture" class="rounded-circle img-thumbnail neon-border">
                         </span>
                     </a>
                     <a href=" #"><span class="text-white h4">Super Admin</span></a>

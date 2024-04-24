@@ -91,7 +91,7 @@
         <!-- LEFT SIDE CONTAINER -->
         <div class="left-side slanted-divider">
             <div class="account-logo">
-                <a href="index.php"><img src="img/doh.png" alt="Company Logo"></a>
+                <a href="index.php"><img src="img/pcc-logo.png" alt="Company Logo"></a>
             </div>
         </div>
         <!-- RIGHT SIDE CONTAINER -->
