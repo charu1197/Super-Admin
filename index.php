@@ -201,7 +201,7 @@ $row = pg_fetch_assoc($students);
 
                 <!-- METRICS -->
                 <div class="row">
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                    <!-- <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
@@ -223,7 +223,7 @@ $row = pg_fetch_assoc($students);
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
@@ -237,17 +237,17 @@ $row = pg_fetch_assoc($students);
                         </div>
                     </div>
 
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                    <!-- <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalActivities; ?></h3> -->
+                                    <?php echo $totalActivities; ?>
                                     <span>Today's Activity</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">

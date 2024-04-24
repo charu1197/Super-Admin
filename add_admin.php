@@ -32,29 +32,14 @@ if (isset($_POST['submit'])) {
 
     $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
     $date = date("Y-m-d");
-<<<<<<< HEAD
-    $img = $_POST['image'];
-    $folderPath = "./uploads/";
-
-    $image_parts = explode(";base64,", $img);
-    $image_base64 = base64_decode($image_parts[1]);
-    $fileName = uniqid() . '.jpeg';
-    $file = $folderPath . $fileName;
-    file_put_contents($file, $image_base64);
-=======
-
     // $img = $_POST['image'];
     // $folderPath = "./uploads/";
 
     // $image_parts = explode(";base64,", $img);
-    // $image_type_aux = explode("image/", $image_parts[0]);
-    // $image_type = $image_type_aux[1];
     // $image_base64 = base64_decode($image_parts[1]);
     // $fileName = uniqid() . '.jpeg';
     // $file = $folderPath . $fileName;
-
     // file_put_contents($file, $image_base64);
->>>>>>> bb266d96f61c84915f581dbfa60a724b0467d0f2
 
     $check_sql = "SELECT * FROM admin_users WHERE email='$email'";
     $result = pg_query($db_connection, $check_sql);
@@ -62,40 +47,14 @@ if (isset($_POST['submit'])) {
     if (pg_num_rows($result) > 0) {
         echo '<script>alert("Account already existed.");</script>';
     } else {
-<<<<<<< HEAD
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
-        $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password, $fileName);
+        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+        $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password);
         if ($stmt = pg_prepare($db_connection, "", $sql)) {
             pg_execute($db_connection, "", $params);
             echo '<script>alert("Registration Successful!");</script>';
         } else {
             echo '<script>alert("Error in registration.");</script>';
         }
-=======
-        // old query for picture
-        // $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) 
-        // VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password', '$img')";
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password) 
-        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password')";
-
-
-        pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
-
-        echo '<script>
-                setTimeout(function(){
-                    Swal.fire({
-                        title: "Registration Successful!",
-                        text: "Please proceed to HR department to complete your account registration.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "manage_account.php";
-                        }
-                    });
-                }, 500);
-            </script>';
->>>>>>> bb266d96f61c84915f581dbfa60a724b0467d0f2
     }
 }
 ?>

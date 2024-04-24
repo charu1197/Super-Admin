@@ -59,14 +59,14 @@
                     <ul style="display: none;">
                         <li><a href="manage_account.php">Admin List</a></li>
                         <li><a href="add_admin.php">Create Account</a></li>
-                        <li><a href="password_request.php">Change Password Request</a></li>
+                        <!-- <li><a href="password_request.php">Change Password Request</a></li> -->
                     </ul>
                 </li>
 
                 <!-- ACTIVITY LOGS -->
-                <li>
+                <!-- <li>
                     <a href="activity_log.php"><i class="la la-history"></i><span>Activity Logs</span></a>
-                </li>
+                </li> -->
 
                 <!-- LOGOUT -->
                 <li class="out-container">

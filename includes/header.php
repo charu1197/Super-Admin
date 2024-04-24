@@ -83,9 +83,9 @@
 
     <!-- DATE AND TIME -->
     <div class="page-title-box">
-        <div class="d-flex flex-row">
+        <!-- <div class="d-flex flex-row">
             <img class="weather-icon" src="./assets/img/clouds.png">
-        </div>
+        </div> -->
 
         <div class="d-flex flex-column">
             <h3 id="day" class="day mb-0"></h3>

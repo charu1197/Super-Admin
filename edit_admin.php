@@ -22,6 +22,7 @@ if (isset($_POST['submit'])) {
 
   $fname = $_POST['firstname'];
   $lname = $_POST['lastname'];
+  $empID = $_POST['empID'];
   $mname = $_POST['middlename'];
   $gender = $_POST['gender'];
   $age = $_POST['age'];
@@ -35,6 +36,7 @@ if (isset($_POST['submit'])) {
   $sql = "UPDATE admin_users 
     SET 
       firstname = '$fname', 
+      empID = '$empID',
       lastname = '$lname', 
       middlename = '$mname', 
       age = '$age', 

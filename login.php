@@ -118,9 +118,9 @@
                                 Forgot password?
                             </a>
                             <!-- sign up -->
-                            <a class="float-right forgot-password" href="signup.php">
+                            <!-- <a class="float-right forgot-password" href="signup.php">
                                 Sign up
-                            </a>
+                            </a> -->
                         </div>
                         <button class="btn btn-primary login-btn" name="login" type="submit">Login</button>
                     </div>

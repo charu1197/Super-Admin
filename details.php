@@ -153,10 +153,10 @@ margin-left: -8em;
             <label for="">Date Created:</label>
             <h4><?php echo $row['date_created']; ?></h4>
         </div>
-        <div>
+        <!-- <div>
             <label for="">Password:</label>
             <h4><?php echo $row['password']; ?></h4>
-        </div>
+        </div> -->
     </div>
 
     <div style="clear:both;"></div>

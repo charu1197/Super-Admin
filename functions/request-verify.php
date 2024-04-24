@@ -3,7 +3,8 @@ session_start();
 require_once "../connections/connection.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_code'])) {
-    $connection = connection();
+    // $db_connection = connection();
+    $db_connection = pg_connect("host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023");
 
     // Retrieve the array of verification codes
     $enteredCodes = isset($_POST['request_code']) ? $_POST['request_code'] : [];
@@ -16,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_code'])) {
         // Verification code is correct, select the user based on code
         $email = isset($_SESSION['admin_email']) ? $_SESSION['admin_email'] : '';
 
-        $stmtSelectUser = pg_prepare($connection, 'select_user_query', 'SELECT * FROM super_admin_users WHERE email = $1 AND request_code = $2');
-        $result = pg_execute($connection, 'select_user_query', array($email, $enteredCode));
+        $stmtSelectUser = pg_prepare($db_connection, 'select_user_query', 'SELECT * FROM super_admin_users WHERE email = $1 AND request_code = $2');
+        $result = pg_execute($db_connection, 'select_user_query', array($email, $enteredCode));
 
         $user = pg_fetch_assoc($result);
 
@@ -25,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_code'])) {
             // User found, update the status
             $status = 'pending';
 
-            $stmtUpdateStatus = pg_prepare($connection, 'update_status_query', 'UPDATE super_admin_users SET request_status = $1 WHERE email = $2');
-            pg_execute($connection, 'update_status_query', array($status, $email));
+            $stmtUpdateStatus = pg_prepare($db_connection, 'update_status_query', 'UPDATE super_admin_users SET request_status = $1 WHERE email = $2');
+            pg_execute($db_connection, 'update_status_query', array($status, $email));
 
             // Assuming $_SESSION['user_id'] is set
             $_SESSION['admin_name'] = $user['lastname'];
@@ -47,6 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_code'])) {
     }
 
     // Close the connection
-    pg_close($connection);
+    pg_close($db_connection);
 }
 ?>
