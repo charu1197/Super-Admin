@@ -107,13 +107,13 @@ margin-left: -8em;
 
     <div class="user-details">
       <div id="phname">
-        <img src="<?php echo $row['photo']; ?>" alt="User Photo">
+        <!-- <img src="<?php echo $row['photo']; ?>" alt="User Photo"> -->
             <div class="c">
                 <h4 id="FL"><?php echo $row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname']; ?></h4>
                 <h4><?php echo $row['department']; ?> Admin</h4>
             </div>
       </div>
-                
+            <br><hr>
             <p id="PI">Personal Information</p>
 
             <div class="details-info">
