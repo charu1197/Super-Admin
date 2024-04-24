@@ -4,6 +4,77 @@ include_once("connections/connection.php");
 
 $db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
+    $id = $_POST['delete_id'];
+    $pw = $_POST['password'];
+
+    // Use prepared statement to fetch user data from the database based on ID
+    $sqlFetch = "SELECT * FROM admin_users WHERE admin_id = $1";
+    $resultFetch = pg_query_params($db_connection, $sqlFetch, array($id));
+
+    // Use prepared statement to fetch super admin password
+    $sqlFetchAdminPw = "SELECT password FROM super_admin_users WHERE sa_id = $1";
+    $resultFetchAdminPw = pg_query_params($db_connection, $sqlFetchAdminPw, array(1)); // Assuming sa_id = 1
+
+    $deletionPassword = "pccdelete";
+
+// Check if the entered password matches the predefined deletion password
+if ($resultFetch && $resultFetchAdminPw) {
+    $row = pg_fetch_assoc($resultFetch);
+    $adminPwRow = pg_fetch_assoc($resultFetchAdminPw);
+
+    // Check if the entered password matches the predefined deletion password
+    if ($pw === $deletionPassword) {
+        // Password is correct, proceed with deletion
+        $sqlDelete = "DELETE FROM admin_users WHERE admin_id = $1";
+        $resultDelete = pg_query_params($db_connection, $sqlDelete, array($id));
+
+        if ($resultDelete) {
+            // Deletion successful
+            echo '<script>
+                setTimeout(function(){
+                    Swal.fire({
+                        title: "Success!",
+                        text: "User deleted successfully",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "manage_account.php";
+                        }
+                    });
+                }, 500);
+            </script>';
+        } else {
+            // Deletion failed
+            echo '<script>
+                Swal.fire({
+                    title: "Error!",
+                    text: "Operation failed. Please try again.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            </script>';
+        }
+    } else {
+        // Password is incorrect
+        echo '<script>
+            setTimeout(function(){
+                Swal.fire({
+                    title: "Incorrect Password",
+                    text: "The password you entered is incorrect. Please try again.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }, 500);
+        </script>';
+    }
+}
+}
+
+$sql = "SELECT * FROM admin_users ORDER BY date_updated DESC NULLS LAST";
+$resultFetch = pg_query($db_connection, $sql);
+
 // Queries for Total Users in Metrics
 $sql = "SELECT 
             (SELECT COUNT(*) FROM admin_users WHERE department = 'HR') as total_hr,
@@ -201,7 +272,7 @@ $row = pg_fetch_assoc($students);
 
                 <!-- METRICS -->
                 <div class="row">
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                    <!-- <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
@@ -223,37 +294,39 @@ $row = pg_fetch_assoc($students);
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                    <div class="col-md-5 col-sm-5 col-lg-5 col-xl-5">
                         <div class="card dash-widget card-height">
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
-                                    <h3><?php echo $totalRepository; ?></h3>
-                                    <span>Total Repository<br>Users</span>
+                                    <h1><?php echo $totalRepository; ?></h1>
+                                    <span>Total Repository Admin<br>Users</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                    <!-- <div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
                         <div class="card dash-widget card-height">
                             <div class="card-body card-align">
                                 <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                                 <div class="dash-widget-info">
-                                    <!-- <h3><?php echo $totalActivities; ?></h3> -->
+                                    <?php echo $totalActivities; ?>
                                     <span>Today's Activity</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
-                <div class="row">
+                
+
+                <!-- <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="container">
-                            <h2 class="mt-3 mb-4">Today's Attendance</h2>
+                            <h2 class="mt-3 mb-4">Admin Accounts</h2>
 
                             <div class="table-responsive">
                                 <table class="table table-bordered border-primary">
@@ -292,6 +365,7 @@ $row = pg_fetch_assoc($students);
                                         </tr>
                                     </tbody>
                                 </table>
+                                
                             </div>
                         </div>
                     </div>
@@ -299,7 +373,7 @@ $row = pg_fetch_assoc($students);
                 </div>
             </div>
 
-            <!-- ABSENCE RATE CHART -->
+            ABSENCE RATE CHART
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
                     <div class="container mt-2">
@@ -314,7 +388,7 @@ $row = pg_fetch_assoc($students);
                     $absence_rate = [42, 33, 25, 17, 22, 32, 18, 18, 43, 29, 0, 0, 0];
                     ?>
 
-                    <!-- RENDER CHART JS -->
+                    RENDER CHART JS
                     <script>
                         let months = <?php echo json_encode($months); ?>;
                         let absenceRate = <?php echo json_encode($absence_rate); ?>;
@@ -340,7 +414,7 @@ $row = pg_fetch_assoc($students);
                             }
                         });
                     </script>
-                </div>
+                </div> -->
             </div>
 
         </div>

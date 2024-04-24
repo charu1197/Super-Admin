@@ -5,7 +5,8 @@ require_once "../connections/connection.php";
 
 // If user submits the form
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $connection = connection();
+    // $db_connection = connection();
+    $db_connection = pg_connect("host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023");
 
     $email = isset($_POST['email']) ? $_POST['email'] : '';
 
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     $query = 'SELECT * FROM super_admin_users WHERE email = $1';
-    $result = pg_query_params($connection, $query, array($email));
+    $result = pg_query_params($db_connection, $query, array($email));
 
     $user = pg_fetch_assoc($result);
 
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $_SESSION['admin_name'] = $user['lastname'];
         $_SESSION['admin_email'] = $user['email'];
 
-            sendVerificationEmail($user, $connection);  
+            sendVerificationEmail($user, $db_connection);  
 
             // Redirect to the verification page
             header('location: ../forgot-request.php');
@@ -40,6 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     // Close the connection
-    pg_close($connection);
+    pg_close($db_connection);
 }
 ?>

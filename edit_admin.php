@@ -22,6 +22,7 @@ if (isset($_POST['submit'])) {
 
   $fname = $_POST['firstname'];
   $lname = $_POST['lastname'];
+  $emp_id = $_POST['emp_id'];
   $mname = $_POST['middlename'];
   $gender = $_POST['gender'];
   $age = $_POST['age'];
@@ -35,6 +36,7 @@ if (isset($_POST['submit'])) {
   $sql = "UPDATE admin_users 
     SET 
       firstname = '$fname', 
+      emp_id = '$emp_id',
       lastname = '$lname', 
       middlename = '$mname', 
       age = '$age', 
@@ -230,7 +232,7 @@ if (isset($_POST['submit'])) {
                   </select>
 
                   <label>From Auto Generated Employee ID</label>
-                  <input type="text" name="empID" placeholder="you don't have to type here... " id="empID" value="<?php echo $row['empID']; ?>">
+                  <input type="text" name="emp_id" placeholder="you don't have to type here... " id="emp_id" value="<?php echo $row['emp_id']; ?>">
 
 
                   <label>From Auto Date Created</label>
