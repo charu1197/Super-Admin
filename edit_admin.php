@@ -11,11 +11,12 @@ if (!isset($_SESSION['admin_name'])) {
 // $empID = $_POST['empID'];
 
 include_once("connections/connection.php");
-$con = connection();
+$db_connection = pg_connect("user=postgres.tcfwwoixwmnbwfnzchbn password=sbit4e-4thyear-capstone-2023 host=aws-0-ap-southeast-1.pooler.supabase.com port=5432 dbname=postgres");
+
 $id = $_GET['ID'];
 
 $sql = "SELECT * FROM admin_users WHERE admin_id = '$id'";
-$results = pg_query($con, $sql);
+$results = pg_query($db_connection, $sql);
 $row = pg_fetch_assoc($results);
 
 if (isset($_POST['submit'])) {
@@ -26,7 +27,7 @@ if (isset($_POST['submit'])) {
   $gender = $_POST['gender'];
   $age = $_POST['age'];
   $email = $_POST['email'];
-  $contact = $_POST['contact'];
+  $db_connectiontact = $_POST['contact'];
   $address = $_POST['address'];
   $department = $_POST['department'];
   $date = $_POST['date'];
@@ -39,7 +40,7 @@ if (isset($_POST['submit'])) {
       middlename = '$mname', 
       age = '$age', 
       email = '$email', 
-      contact = '$contact', 
+      contact = '$db_connectiontact', 
       address = '$address', 
       department = '$department', 
       added_at = '$date', 
@@ -47,7 +48,7 @@ if (isset($_POST['submit'])) {
       password = '$password'
     WHERE admin_id = '$id'";
 
-  $result = pg_query($con, $sql) or die(pg_last_error($con));
+  $result = pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
 
   if ($result) {
     echo '<script>
