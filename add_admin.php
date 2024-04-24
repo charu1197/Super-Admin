@@ -32,7 +32,6 @@ if (isset($_POST['submit'])) {
 
     $empID = date("Y") . '-' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
     $date = date("Y-m-d");
-<<<<<<< HEAD
     $img = $_POST['image'];
     $folderPath = "./uploads/";
 
@@ -41,20 +40,6 @@ if (isset($_POST['submit'])) {
     $fileName = uniqid() . '.jpeg';
     $file = $folderPath . $fileName;
     file_put_contents($file, $image_base64);
-=======
-
-    // $img = $_POST['image'];
-    // $folderPath = "./uploads/";
-
-    // $image_parts = explode(";base64,", $img);
-    // $image_type_aux = explode("image/", $image_parts[0]);
-    // $image_type = $image_type_aux[1];
-    // $image_base64 = base64_decode($image_parts[1]);
-    // $fileName = uniqid() . '.jpeg';
-    // $file = $folderPath . $fileName;
-
-    // file_put_contents($file, $image_base64);
->>>>>>> bb266d96f61c84915f581dbfa60a724b0467d0f2
 
     $check_sql = "SELECT * FROM admin_users WHERE email='$email'";
     $result = pg_query($db_connection, $check_sql);
@@ -62,7 +47,6 @@ if (isset($_POST['submit'])) {
     if (pg_num_rows($result) > 0) {
         echo '<script>alert("Account already existed.");</script>';
     } else {
-<<<<<<< HEAD
         $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
         $params = array($fname, $lname, $mname, $gender, $age, $email, $contact, $address, $department, $empID, $date, $password, $fileName);
         if ($stmt = pg_prepare($db_connection, "", $sql)) {
@@ -71,31 +55,6 @@ if (isset($_POST['submit'])) {
         } else {
             echo '<script>alert("Error in registration.");</script>';
         }
-=======
-        // old query for picture
-        // $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password, photo) 
-        // VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password', '$img')";
-        $sql = "INSERT INTO admin_users (firstname, lastname, middlename, gender, age, email, contact, address, department, emp_id, date_created, password) 
-        VALUES ('$fname', '$lname', '$mname', '$gender', '$age', '$email', '$db_connectiontact', '$address', '$department', '$empID', '$date', '$password')";
-
-
-        pg_query($db_connection, $sql) or die(pg_last_error($db_connection));
-
-        echo '<script>
-                setTimeout(function(){
-                    Swal.fire({
-                        title: "Registration Successful!",
-                        text: "Please proceed to HR department to complete your account registration.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "manage_account.php";
-                        }
-                    });
-                }, 500);
-            </script>';
->>>>>>> bb266d96f61c84915f581dbfa60a724b0467d0f2
     }
 }
 ?>
@@ -438,13 +397,14 @@ if (isset($_POST['submit'])) {
                             <!-- <form action="" class="minimal-form" method="post" onsubmit="confirmSubmission(event);"> -->
                             <br><br><br>
                             <center>
-                                <!-- <div class="cap-photo">
+                                <div class="cap-photo">
                                     <img src="" alt="" name="images" id="images">
                                 </div>
                                 <br>
                                 <div class="modal-camera">
+                                    <!-- Change the button type to "button" -->
                                     <button type="button" id="photoCaptureButton">Take a Photo</button>
-                                </div> -->
+                                </div>
                             </center>
                             <div class="row">
 
@@ -546,7 +506,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                             </div>
 
-                            <!-- <div id="photoCaptureModal" class="modal">
+                            <div id="photoCaptureModal" class="modal">
                                 <div class="modal-content">
                                     <span class="close" onclick="closePhotoCaptureModal()">&times;</span>
 
@@ -575,14 +535,14 @@ if (isset($_POST['submit'])) {
                                             <br />
 
                                             <button class="btn btn-success" onclick=closePhotoCaptureModal()>Save</button>
-                                          
+                                            <!-- <input type="submit" value="save" onclick=closePhotoCaptureModal()> -->
 
                                         </div>
 
                                     </div>
 
                                 </div>
-                            </div> -->
+                            </div>
                         </form>
                     </div>
 
@@ -617,7 +577,7 @@ if (isset($_POST['submit'])) {
     <!-- Custom JS -->
     <script src="assets/js/app.js"></script>
 
-    <!-- <script language="JavaScript">
+    <script language="JavaScript">
         Webcam.set({
 
             width: 360,
@@ -655,7 +615,7 @@ if (isset($_POST['submit'])) {
             });
 
         }
-    </script> -->
+    </script>
 
 
 
@@ -685,19 +645,19 @@ if (isset($_POST['submit'])) {
         // }
 
 
-        // document.getElementById('photoCaptureButton').addEventListener('click', function() {
-        //     openPhotoCaptureModal();
-        // });
+        document.getElementById('photoCaptureButton').addEventListener('click', function() {
+            openPhotoCaptureModal();
+        });
 
-        // // ... (your existing script) ...
+        // ... (your existing script) ...
 
-        // function openPhotoCaptureModal() {
-        //     document.getElementById('photoCaptureModal').style.display = 'block';
-        // }
+        function openPhotoCaptureModal() {
+            document.getElementById('photoCaptureModal').style.display = 'block';
+        }
 
-        // function closePhotoCaptureModal() {
-        //     document.getElementById('photoCaptureModal').style.display = 'none';
-        // }
+        function closePhotoCaptureModal() {
+            document.getElementById('photoCaptureModal').style.display = 'none';
+        }
 
 
 
